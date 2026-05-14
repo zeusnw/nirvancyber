@@ -1,0 +1,2669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Cloudflare Turnstile -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<title>NirvanCyber — Cybersecurity Consultancy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #050608;
+    --deep: #0a0c10;
+    --card: #0f1117;
+    --border: rgba(255,255,255,0.08);
+    --border-bright: rgba(255,122,0,0.35);
+    --accent: #ff7a00;
+    --accent-dim: rgba(255,122,0,0.12);
+    --accent-mid: rgba(255,122,0,0.5);
+    --red: #ff3b5c;
+    --blue: #2a6fff;
+    --white: #f0f2f5;
+    --muted: #6b7280;
+    --mono: 'IBM Plex Mono', monospace;
+    --display: 'Syne', sans-serif;
+    --body: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(5,6,8,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .logo {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 1.35rem;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .logo span { color: var(--accent); }
+  .nav-links {
+    display: flex; gap: 2.5rem; list-style: none;
+    font-size: 0.875rem; font-weight: 500;
+  }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    transition: color 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--accent); color: var(--black);
+    padding: 0.55rem 1.3rem; border-radius: 4px;
+    font-size: 0.875rem; font-weight: 700;
+    text-decoration: none; font-family: var(--display);
+    letter-spacing: 0.02em;
+    transition: opacity 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 8rem 4rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,122,0,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,122,0,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 40%, transparent 100%);
+  }
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,122,0,0.07) 0%, transparent 70%);
+    top: -100px; right: -100px;
+    pointer-events: none;
+  }
+  .hero-glow-2 {
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(42,111,255,0.06) 0%, transparent 70%);
+    bottom: 0; left: 5%;
+    pointer-events: none;
+  }
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 24px; height: 1px;
+    background: var(--accent);
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+    max-width: 14ch;
+    margin-bottom: 2rem;
+  }
+  .hero h1 .line-accent { color: var(--accent); }
+  .hero-sub {
+    font-size: 1.1rem;
+    color: #9ca3af;
+    max-width: 42ch;
+    line-height: 1.7;
+    margin-bottom: 3rem;
+    font-weight: 300;
+  }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--accent); color: var(--black);
+    padding: 0.9rem 2rem; border-radius: 4px;
+    font-size: 0.9rem; font-weight: 700;
+    text-decoration: none; font-family: var(--display);
+    letter-spacing: 0.04em;
+    transition: opacity 0.2s, transform 0.2s;
+    display: inline-block;
+  }
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+  .btn-ghost {
+    border: 1px solid var(--border-bright);
+    color: var(--accent);
+    padding: 0.9rem 2rem; border-radius: 4px;
+    font-size: 0.9rem; font-weight: 500;
+    text-decoration: none; font-family: var(--body);
+    transition: background 0.2s;
+    display: inline-block;
+  }
+  .btn-ghost:hover { background: var(--accent-dim); }
+  .hero-stats {
+    display: flex; gap: 4rem;
+    margin-top: 5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .stat-num {
+    font-family: var(--display);
+    font-size: 2.5rem; font-weight: 800;
+    color: var(--white); letter-spacing: -0.03em;
+  }
+  .stat-num span { color: var(--accent); }
+  .stat-label { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.05em; margin-top: 0.2rem; }
+
+  /* ── TICKER ── */
+  .ticker-wrap {
+    overflow: hidden;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--deep);
+    padding: 0.8rem 0;
+  }
+  .ticker {
+    display: flex; gap: 4rem;
+    animation: ticker 30s linear infinite;
+    width: max-content;
+  }
+  .ticker-item {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .ticker-item::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+    opacity: 0.6;
+  }
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 7rem 4rem; }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: var(--display);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 1.2rem;
+  }
+  .section-desc {
+    font-size: 1rem;
+    color: #9ca3af;
+    max-width: 52ch;
+    line-height: 1.75;
+    font-weight: 300;
+  }
+
+  /* ── SERVICES ── */
+  #services { background: var(--deep); }
+  .services-intro { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; gap: 2rem; flex-wrap: wrap; }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .service-card {
+    background: var(--card);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+    cursor: default;
+  }
+  .service-card:hover { background: #131720; }
+  .service-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s ease;
+  }
+  .service-card:hover::after { transform: scaleX(1); }
+  .service-icon {
+    width: 44px; height: 44px;
+    border: 1px solid var(--border-bright);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+  }
+  .service-card h3 {
+    font-family: var(--display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+  }
+  .service-card p { font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
+  .service-num {
+    position: absolute; top: 2rem; right: 2rem;
+    font-family: var(--mono); font-size: 0.65rem;
+    color: rgba(0,255,170,0.25); letter-spacing: 0.1em;
+  }
+
+  /* ── THREAT ── */
+  #threat { background: var(--black); }
+  .threat-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .threat-visual {
+    position: relative;
+    border: 1px solid var(--border);
+    background: var(--card);
+    padding: 2rem;
+    border-radius: 8px;
+  }
+  .threat-bar-row {
+    display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem;
+  }
+  .threat-bar-label {
+    font-family: var(--mono); font-size: 0.7rem;
+    color: var(--muted); width: 130px; flex-shrink: 0;
+    letter-spacing: 0.05em;
+  }
+  .threat-bar-track {
+    flex: 1; height: 6px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 3px; overflow: hidden;
+  }
+  .threat-bar-fill {
+    height: 100%; border-radius: 3px;
+    animation: barGrow 1.2s ease-out forwards;
+    transform-origin: left;
+  }
+  .threat-bar-fill.green { background: var(--accent); }
+  .threat-bar-fill.red { background: var(--red); }
+  .threat-bar-fill.blue { background: var(--blue); }
+  .threat-bar-pct {
+    font-family: var(--mono); font-size: 0.7rem;
+    color: var(--white); width: 36px; text-align: right;
+  }
+  @keyframes barGrow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+  .threat-content .section-title { max-width: 16ch; }
+  .threat-points { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1.25rem; }
+  .threat-point {
+    display: flex; gap: 1rem; align-items: flex-start;
+  }
+  .tp-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent); flex-shrink: 0; margin-top: 7px;
+  }
+  .tp-text h4 { font-family: var(--display); font-size: 0.95rem; font-weight: 700; margin-bottom: 0.25rem; }
+  .tp-text p { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+
+  /* ── PROCESS ── */
+  #process { background: var(--deep); }
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    margin-top: 4rem;
+    position: relative;
+  }
+  .process-grid::before {
+    content: '';
+    position: absolute;
+    top: 28px; left: 10%; right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-mid), transparent);
+    z-index: 0;
+  }
+  .process-step { padding: 0 1.5rem; text-align: center; position: relative; z-index: 1; }
+  .process-num {
+    width: 56px; height: 56px;
+    border: 1px solid var(--border-bright);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-family: var(--mono); font-size: 0.8rem; color: var(--accent);
+    background: var(--deep);
+  }
+  .process-step h3 { font-family: var(--display); font-size: 0.95rem; font-weight: 700; margin-bottom: 0.6rem; }
+  .process-step p { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
+
+  /* ── INDUSTRIES ── */
+  #industries { background: var(--black); }
+  .ind-intro { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3.5rem; gap: 2rem; flex-wrap: wrap; }
+  .ind-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+  .ind-card {
+    border: 1px solid var(--border);
+    background: var(--card);
+    padding: 2rem 1.75rem;
+    border-radius: 6px;
+    transition: border-color 0.25s, background 0.25s;
+    cursor: default;
+  }
+  .ind-card:hover {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+  }
+  .ind-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+  .ind-card h3 { font-family: var(--display); font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .ind-card p { font-size: 0.8rem; color: var(--muted); }
+
+  /* ── CERTIFICATIONS ── */
+  #certs { background: var(--deep); border-top: 1px solid var(--border); }
+  .certs-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem; }
+  .cert-item {
+    font-family: var(--mono); font-size: 0.72rem;
+    color: var(--muted); letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.4rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  /* ── TEAM ── */
+  #team { background: var(--black); }
+  .team-intro { margin-bottom: 4rem; }
+  .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+  .team-card {
+    border: 1px solid var(--border);
+    background: var(--card);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.25s;
+  }
+  .team-card:hover { border-color: rgba(255,122,0,0.3); }
+  .team-photo {
+    height: 200px;
+    background: linear-gradient(135deg, #0f1117 0%, #1a1f2e 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .team-photo::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, var(--card) 100%);
+  }
+  .team-info { padding: 1.5rem; }
+  .team-info h3 { font-family: var(--display); font-size: 1rem; font-weight: 700; }
+  .team-role { font-size: 0.78rem; color: var(--accent); margin: 0.2rem 0 0.75rem; font-family: var(--mono); }
+  .team-info p { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
+
+  /* ── TESTIMONIALS ── */
+  #testimonials { background: var(--deep); }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 4rem; }
+  .testi-card {
+    border: 1px solid var(--border);
+    background: var(--card);
+    padding: 2rem;
+    border-radius: 8px;
+    position: relative;
+  }
+  .testi-quote {
+    font-size: 2rem; color: var(--accent); opacity: 0.3;
+    font-family: var(--display); line-height: 1;
+    margin-bottom: 1rem;
+  }
+  .testi-text { font-size: 0.9rem; color: #d1d5db; line-height: 1.75; margin-bottom: 1.5rem; font-weight: 300; }
+  .testi-author { display: flex; align-items: center; gap: 0.75rem; }
+  .testi-avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--accent-dim); border: 1px solid var(--border-bright);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; font-weight: 700; color: var(--accent);
+    font-family: var(--mono);
+  }
+  .testi-name { font-size: 0.85rem; font-weight: 600; }
+  .testi-company { font-size: 0.75rem; color: var(--muted); font-family: var(--mono); }
+
+  /* ── CTA ── */
+  #cta {
+    background: var(--black);
+    text-align: center;
+    padding: 8rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  #cta::before {
+    content: '';
+    position: absolute;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,122,0,0.06) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  #cta .section-title { font-size: clamp(2.5rem, 6vw, 5rem); max-width: 18ch; margin: 1rem auto 1.5rem; }
+  #cta .section-desc { margin: 0 auto 3rem; text-align: center; }
+  .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--deep);
+    border-top: 1px solid var(--border);
+    padding: 4rem 4rem 2rem;
+  }
+  .footer-top {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+  .footer-brand p { font-size: 0.875rem; color: var(--muted); margin-top: 1rem; line-height: 1.7; max-width: 30ch; }
+  .footer-col h4 { font-family: var(--display); font-size: 0.85rem; font-weight: 700; margin-bottom: 1.25rem; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  .footer-col a { font-size: 0.82rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .footer-col a:hover { color: var(--accent); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; color: var(--muted); }
+  .footer-bottom a { color: var(--muted); text-decoration: none; }
+  .footer-badge {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-family: var(--mono); font-size: 0.65rem;
+    color: var(--accent); letter-spacing: 0.1em;
+  }
+  .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* ── HERO SCROLL INDICATOR ── */
+  .scroll-indicator {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    font-family: var(--mono); font-size: 0.62rem; color: var(--muted);
+    letter-spacing: 0.12em;
+    animation: fadeInUp 1s 1.5s both;
+  }
+  .scroll-line {
+    width: 1px; height: 48px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+  @keyframes scrollLine {
+    0%, 100% { transform: scaleY(1); opacity: 1; }
+    50% { transform: scaleY(0.5); opacity: 0.4; }
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translate(-50%, 20px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-tag { animation: fadeIn 0.8s 0.2s both; }
+  .hero h1 { animation: fadeIn 0.8s 0.4s both; }
+  .hero-sub { animation: fadeIn 0.8s 0.6s both; }
+  .hero-actions { animation: fadeIn 0.8s 0.8s both; }
+  .hero-stats { animation: fadeIn 0.8s 1s both; }
+
+  /* ── CLIENTS ── */
+  .client-logo-wrap {
+    width: 64px; height: 64px;
+    background: #fff;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    padding: 6px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .client-logo-img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+  .client-icon-fallback {
+    width: 100%; height: 100%;
+    border-radius: 8px;
+    display: none;
+    align-items: center; justify-content: center;
+    font-family: var(--display); font-weight: 800;
+    font-size: 0.9rem; color: #fff;
+    letter-spacing: -0.02em;
+  }
+    background: var(--card);
+    padding: 2rem;
+    transition: background 0.25s;
+    cursor: default;
+  }
+  .client-tile:hover { background: #131720; }
+  .client-icon {
+    width: 52px; height: 52px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--display); font-weight: 800;
+    font-size: 1rem; color: #fff;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+  .client-name {
+    font-family: var(--display);
+    font-size: 1rem; font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+  .client-sector {
+    font-family: var(--mono); font-size: 0.65rem;
+    color: var(--muted); letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 0.85rem;
+  }
+  .client-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .ctag {
+    font-size: 0.7rem; color: var(--accent);
+    background: var(--accent-dim);
+    border: 1px solid var(--border-bright);
+    border-radius: 3px; padding: 2px 8px;
+    font-family: var(--mono); letter-spacing: 0.04em;
+  }
+
+  /* ── BIG 5 COMPARISON ── */
+  #compare { background: var(--deep); }
+  .compare-intro { text-align: center; margin-bottom: 4rem; }
+  .compare-intro .section-desc { margin: 0.75rem auto 0; text-align: center; }
+  .firms-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+  .firm-card {
+    border: 1px solid var(--border);
+    background: var(--card);
+    border-radius: 8px;
+    padding: 1.75rem 1.25rem;
+    text-align: center;
+    position: relative;
+    transition: border-color 0.25s;
+  }
+  .firm-card.highlight {
+    border-color: var(--accent);
+    background: rgba(255,122,0,0.04);
+  }
+  .firm-card.highlight::before {
+    content: '★ Our Approach';
+    position: absolute;
+    top: -12px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: var(--black);
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .firm-logo-box {
+    width: 52px; height: 52px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 1.4rem;
+    border: 1px solid var(--border);
+    background: var(--deep);
+  }
+  .firm-card.highlight .firm-logo-box {
+    border-color: var(--border-bright);
+    background: var(--accent-dim);
+  }
+  .firm-name {
+    font-family: var(--display);
+    font-size: 0.9rem; font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+  .firm-tagline {
+    font-family: var(--mono); font-size: 0.62rem;
+    color: var(--muted); letter-spacing: 0.06em;
+    margin-bottom: 1rem;
+  }
+  .firm-tags { display: flex; flex-direction: column; gap: 0.4rem; align-items: center; }
+  .firm-tag {
+    font-size: 0.72rem; color: #9ca3af;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 3px; padding: 3px 8px;
+    width: 100%; text-align: center;
+  }
+  .firm-tag.accent-tag {
+    color: var(--accent);
+    background: var(--accent-dim);
+    border-color: var(--border-bright);
+  }
+
+  /* ── COMPARISON TABLE ── */
+  .compare-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .compare-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 0.82rem;
+  }
+  .compare-table th {
+    background: var(--card);
+    padding: 1rem 1.25rem;
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .compare-table th.us-col { color: var(--accent); }
+  .compare-table td {
+    padding: 0.875rem 1.25rem;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: #d1d5db;
+    vertical-align: middle;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { color: var(--white); font-weight: 500; }
+  .compare-table td.us-col { background: rgba(255,122,0,0.03); }
+  .check { color: var(--accent); font-size: 1rem; }
+  .cross { color: var(--muted); font-size: 1rem; }
+  .partial { color: #f59e0b; font-size: 0.75rem; }
+
+  /* ── ACCENTURE-STYLE EXPANDED SERVICES ── */
+  #expanded-services { background: var(--black); }
+  .exp-services-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 4rem; align-items: start; }
+  .exp-services-nav { position: sticky; top: 6rem; }
+  .exp-nav-item {
+    padding: 0.9rem 1.25rem;
+    border-left: 2px solid var(--border);
+    font-size: 0.85rem; color: var(--muted);
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+    margin-bottom: 0.25rem;
+  }
+  .exp-nav-item.active, .exp-nav-item:hover {
+    color: var(--white);
+    border-left-color: var(--accent);
+  }
+  .exp-panels { display: flex; flex-direction: column; gap: 1.5rem; }
+  .exp-panel {
+    border: 1px solid var(--border);
+    background: var(--card);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .exp-panel-header {
+    padding: 1.75rem 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .exp-panel-header:hover { background: rgba(255,255,255,0.02); }
+  .exp-panel-title-row { display: flex; align-items: center; gap: 1rem; }
+  .exp-panel-icon { font-size: 1.25rem; }
+  .exp-panel-title { font-family: var(--display); font-size: 1rem; font-weight: 700; }
+  .exp-panel-sub { font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem; }
+  .exp-panel-arrow {
+    font-family: var(--mono); font-size: 0.8rem;
+    color: var(--accent); transition: transform 0.3s;
+  }
+  .exp-panel.open .exp-panel-arrow { transform: rotate(180deg); }
+  .exp-panel-body {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease;
+    border-top: 1px solid transparent;
+  }
+  .exp-panel.open .exp-panel-body {
+    max-height: 600px;
+    border-top-color: var(--border);
+  }
+  .exp-panel-inner { padding: 2rem; }
+  .exp-capabilities {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .exp-cap {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+  }
+  .exp-cap h5 { font-size: 0.82rem; font-weight: 600; margin-bottom: 0.35rem; }
+  .exp-cap p { font-size: 0.75rem; color: var(--muted); line-height: 1.55; }
+  .exp-firms-row {
+    display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+  .exp-firms-label {
+    font-family: var(--mono); font-size: 0.6rem;
+    color: var(--muted); letter-spacing: 0.1em;
+  }
+  .exp-firm-badge {
+    font-family: var(--mono); font-size: 0.6rem;
+    padding: 3px 8px; border-radius: 3px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .exp-firm-badge.us { background: var(--accent-dim); border-color: var(--border-bright); color: var(--accent); }
+
+  @media (max-width: 900px) {
+    .firms-grid { grid-template-columns: 1fr 1fr; }
+    .exp-services-layout { grid-template-columns: 1fr; }
+    .exp-services-nav { position: static; }
+    .exp-capabilities { grid-template-columns: 1fr; }
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .hero { padding: 7rem 1.5rem 4rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .threat-layout { grid-template-columns: 1fr; }
+    .process-grid { grid-template-columns: 1fr 1fr; }
+    .ind-grid { grid-template-columns: 1fr 1fr; }
+    .team-grid { grid-template-columns: 1fr 1fr; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .hero-stats { gap: 2rem; flex-wrap: wrap; }
+  }
+
+  @media (max-width: 600px) {
+    /* Nav */
+    nav { padding: 1rem; }
+    .nav-cta { padding: 0.45rem 0.9rem; font-size: 0.78rem; }
+
+    /* Hero */
+    .hero { padding: 6rem 1.2rem 3rem; }
+    .hero h1 { font-size: 2.6rem; }
+    .hero-sub { font-size: 0.95rem; }
+    .hero-actions { flex-direction: column; }
+    .btn-primary, .btn-ghost { width: 100%; text-align: center; padding: 0.9rem 1rem; }
+    .hero-stats { gap: 1.5rem; }
+    .stat-num { font-size: 2rem; }
+
+    /* Sections */
+    section { padding: 3rem 1.2rem; }
+    #certs { padding: 1.5rem 1.2rem; }
+    .section-title { font-size: 1.9rem; }
+
+    /* Services */
+    .services-grid { grid-template-columns: 1fr; }
+    .services-intro { flex-direction: column; }
+
+    /* Threat */
+    .threat-layout { grid-template-columns: 1fr; gap: 2rem; }
+    .threat-bar-label { width: 90px; font-size: 0.65rem; }
+
+    /* Process */
+    .process-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .process-grid::before { display: none; }
+
+    /* Industries */
+    .ind-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .ind-intro { flex-direction: column; }
+
+    /* Certs */
+    .certs-row { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
+
+    /* Clients */
+    #clients { padding: 3rem 1.2rem; }
+    #clients > div:first-child + div { grid-template-columns: 1fr 1fr !important; gap: 1px; }
+    .client-tile { padding: 1.25rem; }
+    .client-tile[style*="span 3"] { grid-column: span 2 !important; }
+
+    /* Team */
+    .team-grid { grid-template-columns: 1fr; }
+
+    /* Comparison */
+    .firms-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .compare-table-wrap { font-size: 0.72rem; }
+    .compare-table th, .compare-table td { padding: 0.6rem 0.75rem; }
+
+    /* Contact form */
+    #contact > div { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
+    #contact .exp-panel-inner,
+    #contact form { gap: 1rem !important; }
+    #contact div[style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
+
+    /* CTA */
+    .cta-actions { flex-direction: column; align-items: center; }
+    #cta { padding: 4rem 1.2rem; }
+    #cta .section-title { font-size: 2.2rem; }
+
+    /* Footer */
+    .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+    footer { padding: 3rem 1.2rem 1.5rem; }
+    .footer-bottom { flex-direction: column; gap: 0.75rem; text-align: center; }
+
+    /* Expanded services */
+    #expanded-services { padding: 3rem 1.2rem; }
+    .exp-panel-inner { padding: 1.25rem; }
+    .exp-firms-row { flex-direction: column; gap: 0.4rem; }
+
+    /* Hero scroll indicator */
+    .scroll-indicator { display: none; }
+  }
+
+  /* Hamburger menu for mobile */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+  }
+  .nav-hamburger span {
+    width: 22px; height: 2px;
+    background: var(--white);
+    border-radius: 2px;
+    transition: 0.3s;
+  }
+  @media (max-width: 900px) {
+    .nav-hamburger { display: flex; }
+  }
+
+  /* Mobile menu overlay */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(5,6,8,0.98);
+    z-index: 200;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: var(--display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--white);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+    transition: color 0.2s;
+  }
+  .mobile-menu a:hover { color: var(--accent); }
+  .mobile-menu-close {
+    position: absolute;
+    top: 1.5rem; right: 1.5rem;
+    font-size: 1.5rem;
+    color: var(--muted);
+    cursor: pointer;
+    background: none; border: none;
+    font-family: var(--body);
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo" style="display:flex;align-items:center;gap:0.6rem;text-decoration:none;"><svg width="28" height="32" viewBox="0 0 28 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 1L2 6.5V15C2 22.18 7.2 28.9 14 31C20.8 28.9 26 22.18 26 15V6.5L14 1Z" fill="rgba(255,122,0,0.15)" stroke="#ff7a00" stroke-width="1.5" stroke-linejoin="round"/><path d="M14 7L6 10.5V16C6 20.4 9.6 24.5 14 26C18.4 24.5 22 20.4 22 16V10.5L14 7Z" fill="rgba(255,122,0,0.2)" stroke="#ff7a00" stroke-width="1" stroke-linejoin="round" opacity="0.7"/><path d="M10 16L13 19L18 13" stroke="#ff7a00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="color:#ff7a00;font-family:Syne,sans-serif;font-weight:800;font-size:1.35rem;letter-spacing:-0.03em;">Nirvan</span><span style="color:#f0f2f5;font-family:Syne,sans-serif;font-weight:800;font-size:1.35rem;letter-spacing:-0.03em;">Cyber</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#threat">Threat Intelligence</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#industries">Industries</a></li>
+    <li><a href="#clients">Clients</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#testimonials">Clients</a></li>
+    <li><a href="#compare">vs Big 5</a></li>
+    <li><a href="#blog">Blog</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#cta" class="nav-cta">Book Assessment</a>
+  <div class="nav-hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mobile-menu-close" onclick="toggleMenu()">✕</button>
+  <a href="#services" onclick="toggleMenu()">Services</a>
+  <a href="#threat" onclick="toggleMenu()">Threat Intel</a>
+  <a href="#process" onclick="toggleMenu()">Process</a>
+  <a href="#industries" onclick="toggleMenu()">Industries</a>
+  <a href="#clients" onclick="toggleMenu()">Clients</a>
+  <a href="#team" onclick="toggleMenu()">Team</a>
+  <a href="#compare" onclick="toggleMenu()">vs Big 5</a>
+  <a href="#blog" onclick="toggleMenu()">Blog</a>
+  <a href="#contact" onclick="toggleMenu()">Contact</a>
+  <a href="#contact" onclick="toggleMenu()" style="color:var(--accent);">Book Assessment →</a>
+</div>
+
+<script>
+  function toggleMenu() {
+    document.getElementById('mobile-menu').classList.toggle('open');
+  }
+</script>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-tag">Cybersecurity Consultancy</div>
+  <h1>Defending<br>What Matters<br><span class="line-accent">Most.</span></h1>
+  <p class="hero-sub">Enterprise-grade cybersecurity consulting — from zero-day threat response to long-term security architecture. We make your defences unbreakable.</p>
+  <div class="hero-actions">
+    <a href="#cta" class="btn-primary">Get a Free Assessment</a>
+    <a href="#services" class="btn-ghost">Explore Services</a>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">500<span>+</span></div>
+      <div class="stat-label">Clients Secured</div>
+    </div>
+    <div>
+      <div class="stat-num">0<span>%</span></div>
+      <div class="stat-label">Breach Recurrence Rate</div>
+    </div>
+    <div>
+      <div class="stat-num">24<span>/7</span></div>
+      <div class="stat-label">SOC Monitoring</div>
+    </div>
+    <div>
+      <div class="stat-num">18<span>yr</span></div>
+      <div class="stat-label">Industry Experience</div>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    scroll
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">Penetration Testing</span>
+    <span class="ticker-item">Zero Trust Architecture</span>
+    <span class="ticker-item">Incident Response</span>
+    <span class="ticker-item">SIEM / SOC</span>
+    <span class="ticker-item">Cloud Security</span>
+    <span class="ticker-item">Threat Intelligence</span>
+    <span class="ticker-item">ISO 27001</span>
+    <span class="ticker-item">GDPR Compliance</span>
+    <span class="ticker-item">Red Team Operations</span>
+    <span class="ticker-item">OT / ICS Security</span>
+    <span class="ticker-item">Penetration Testing</span>
+    <span class="ticker-item">Zero Trust Architecture</span>
+    <span class="ticker-item">Incident Response</span>
+    <span class="ticker-item">SIEM / SOC</span>
+    <span class="ticker-item">Cloud Security</span>
+    <span class="ticker-item">Threat Intelligence</span>
+    <span class="ticker-item">ISO 27001</span>
+    <span class="ticker-item">GDPR Compliance</span>
+    <span class="ticker-item">Red Team Operations</span>
+    <span class="ticker-item">OT / ICS Security</span>
+  </div>
+</div>
+
+<!-- CLIENT LOGO ROLLER -->
+<div style="background:var(--deep); border-bottom:1px solid var(--border); padding:2.5rem 0; overflow:hidden;">
+  <div style="font-family:var(--mono); font-size:0.6rem; color:var(--muted); letter-spacing:0.2em; text-transform:uppercase; text-align:center; margin-bottom:2rem; opacity:0.6;">Organisations Nitin has secured & served</div>
+  <div style="overflow:hidden; position:relative;">
+    <!-- Fade edges -->
+    <div style="position:absolute; left:0; top:0; bottom:0; width:120px; background:linear-gradient(to right, var(--deep), transparent); z-index:2; pointer-events:none;"></div>
+    <div style="position:absolute; right:0; top:0; bottom:0; width:120px; background:linear-gradient(to left, var(--deep), transparent); z-index:2; pointer-events:none;"></div>
+    <div id="client-roller" style="display:flex; gap:3rem; width:max-content; animation:clientRoll 40s linear infinite; align-items:center; padding:0 2rem;">
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes clientRoll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+#client-roller:hover { animation-play-state: paused; }
+.croll-chip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+.croll-chip:hover { opacity: 1; }
+.croll-chip img {
+  width: 28px; height: 28px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 4px;
+  padding: 3px;
+  filter: grayscale(30%);
+}
+.croll-fallback {
+  width: 28px; height: 28px;
+  border-radius: 4px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 0.65rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+.croll-name {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+.croll-dot {
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.4;
+  flex-shrink: 0;
+}
+</style>
+
+<script>
+(function() {
+  const clients = [
+    { name: "Walmart", domain: "walmart.com", color: "#0071ce" },
+    { name: "Asda", domain: "asda.com", color: "#8bc34a" },
+    { name: "Tesco Bank", domain: "tescobank.com", color: "#e31837" },
+    { name: "Skanska", domain: "skanska.com", color: "#005596" },
+    { name: "FCDO Services", domain: "fcdos.com", color: "#1a237e" },
+    { name: "Atos", domain: "atos.net", color: "#3d50b7" },
+    { name: "Thomson Reuters", domain: "thomsonreuters.com", color: "#ff8000" },
+    { name: "British Telecom", domain: "bt.com", color: "#6600cc" },
+    { name: "ING Investment", domain: "ing.com", color: "#ff6200" },
+    { name: "EDF Energy", domain: "edfenergy.com", color: "#0072bc" },
+    { name: "Univ. of Hertfordshire", domain: "herts.ac.uk", color: "#8b1a1a" },
+  ];
+
+  function initials(n) { return n.split(' ').map(w=>w[0]).join('').slice(0,3).toUpperCase(); }
+
+  function makeChip(c, addDot) {
+    const chip = document.createElement('div');
+    chip.className = 'croll-chip';
+
+    const img = document.createElement('img');
+    img.src = `https://logo.clearbit.com/${c.domain}`;
+    img.alt = c.name;
+
+    const fb = document.createElement('div');
+    fb.className = 'croll-fallback';
+    fb.style.background = c.color;
+    fb.textContent = initials(c.name);
+
+    img.onerror = function() {
+      this.style.display = 'none';
+      fb.style.display = 'flex';
+    };
+
+    const name = document.createElement('div');
+    name.className = 'croll-name';
+    name.textContent = c.name;
+
+    chip.append(img, fb, name);
+
+    if (addDot) {
+      const dot = document.createElement('div');
+      dot.className = 'croll-dot';
+      chip.appendChild(dot);
+    }
+
+    return chip;
+  }
+
+  const roller = document.getElementById('client-roller');
+  if (roller) {
+    [...clients, ...clients].forEach((c, i) => {
+      roller.appendChild(makeChip(c, true));
+    });
+  }
+})();
+</script>
+
+<section id="services">
+  <div class="services-intro">
+    <div>
+      <div class="section-label">What We Do</div>
+      <h2 class="section-title">Our Security<br>Services</h2>
+    </div>
+    <p class="section-desc">From proactive threat hunting to full-scale security transformations, we deliver end-to-end cybersecurity solutions tailored to your risk profile.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-num">01</span>
+      <div class="service-icon">🔍</div>
+      <h3>Penetration Testing</h3>
+      <p>Simulated real-world attacks to uncover vulnerabilities before adversaries do — covering networks, applications, APIs, and physical perimeters.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-num">02</span>
+      <div class="service-icon">🛡️</div>
+      <h3>Security Architecture</h3>
+      <p>Design and implement zero-trust frameworks, segmented networks, and resilient security architectures aligned with NIST and CIS controls.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-num">03</span>
+      <div class="service-icon">🚨</div>
+      <h3>Incident Response</h3>
+      <p>24/7 rapid response capability with forensic investigation, containment, eradication, and post-incident recovery planning.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-num">04</span>
+      <div class="service-icon">☁️</div>
+      <h3>Cloud Security</h3>
+      <p>Secure AWS, Azure, and GCP environments with cloud-native controls, CSPM deployment, and identity & access management hardening.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-num">05</span>
+      <div class="service-icon">📋</div>
+      <h3>Compliance & GRC</h3>
+      <p>Navigate ISO 27001, SOC 2, GDPR, NIS2, PCI-DSS, and DORA frameworks with expert gap analysis and remediation roadmaps.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-num">06</span>
+      <div class="service-icon">🔬</div>
+      <h3>Threat Intelligence</h3>
+      <p>Operationalise threat feeds, dark web monitoring, and adversary TTPs to proactively defend against targeted attacks on your sector.</p>
+    </div>
+  </div>
+</section>
+
+<!-- THREAT INTEL -->
+<section id="threat">
+  <div class="threat-layout">
+    <div class="threat-visual">
+      <div style="font-family: var(--mono); font-size: 0.65rem; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 1.75rem; text-transform: uppercase;">Live Threat Landscape — Q2 2025</div>
+      <div class="threat-bar-row">
+        <div class="threat-bar-label">Ransomware</div>
+        <div class="threat-bar-track"><div class="threat-bar-fill green" style="width: 78%;"></div></div>
+        <div class="threat-bar-pct">78%</div>
+      </div>
+      <div class="threat-bar-row">
+        <div class="threat-bar-label">Phishing / BEC</div>
+        <div class="threat-bar-track"><div class="threat-bar-fill red" style="width: 65%;"></div></div>
+        <div class="threat-bar-pct">65%</div>
+      </div>
+      <div class="threat-bar-row">
+        <div class="threat-bar-label">Supply Chain</div>
+        <div class="threat-bar-track"><div class="threat-bar-fill blue" style="width: 52%;"></div></div>
+        <div class="threat-bar-pct">52%</div>
+      </div>
+      <div class="threat-bar-row">
+        <div class="threat-bar-label">Insider Threats</div>
+        <div class="threat-bar-track"><div class="threat-bar-fill green" style="width: 44%;"></div></div>
+        <div class="threat-bar-pct">44%</div>
+      </div>
+      <div class="threat-bar-row">
+        <div class="threat-bar-label">Zero-Days</div>
+        <div class="threat-bar-track"><div class="threat-bar-fill red" style="width: 37%;"></div></div>
+        <div class="threat-bar-pct">37%</div>
+      </div>
+      <div class="threat-bar-row">
+        <div class="threat-bar-label">DDoS</div>
+        <div class="threat-bar-track"><div class="threat-bar-fill blue" style="width: 29%;"></div></div>
+        <div class="threat-bar-pct">29%</div>
+      </div>
+      <div style="margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--muted); font-family: var(--mono);">
+        Incident frequency increase vs prior year across monitored sectors
+      </div>
+    </div>
+    <div class="threat-content">
+      <div class="section-label">Threat Intelligence</div>
+      <h2 class="section-title">Your Adversaries<br>Are Evolving.<br><span style="color:var(--accent)">So Are We.</span></h2>
+      <p class="section-desc">Our intelligence team tracks over 200 threat actor groups across 40 countries, feeding real-time insights into your defences.</p>
+      <div class="threat-points">
+        <div class="threat-point">
+          <div class="tp-dot"></div>
+          <div class="tp-text">
+            <h4>Proactive Threat Hunting</h4>
+            <p>We don't wait for alerts. Our analysts actively hunt adversarial activity in your environment before damage occurs.</p>
+          </div>
+        </div>
+        <div class="threat-point">
+          <div class="tp-dot"></div>
+          <div class="tp-text">
+            <h4>Dark Web Monitoring</h4>
+            <p>Continuous surveillance of underground forums, ransomware blogs, and leak sites for your organisation's data.</p>
+          </div>
+        </div>
+        <div class="threat-point">
+          <div class="tp-dot"></div>
+          <div class="tp-text">
+            <h4>Sector-Specific Intelligence</h4>
+            <p>Tailored feeds relevant to your industry vertical, from financial services to critical national infrastructure.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div style="text-align: center;">
+    <div class="section-label">How We Work</div>
+    <h2 class="section-title">Our Engagement Process</h2>
+    <p class="section-desc" style="margin: 0 auto;">A structured, proven methodology that delivers measurable security improvements from day one.</p>
+  </div>
+  <div class="process-grid">
+    <div class="process-step">
+      <div class="process-num">01</div>
+      <h3>Discovery</h3>
+      <p>Asset inventory, threat profiling, and stakeholder interviews to map your complete attack surface.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">02</div>
+      <h3>Assessment</h3>
+      <p>Deep technical testing, control gap analysis, and maturity benchmarking against industry frameworks.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">03</div>
+      <h3>Roadmap</h3>
+      <p>Prioritised remediation plan with business context, effort estimates, and measurable outcomes.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">04</div>
+      <h3>Implement</h3>
+      <p>Hands-on delivery of security controls, tooling, and process change alongside your teams.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-num">05</div>
+      <h3>Monitor</h3>
+      <p>Continuous validation, threat detection, and executive reporting to sustain your security posture.</p>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES -->
+<section id="industries">
+  <div class="ind-intro">
+    <div>
+      <div class="section-label">Sectors We Serve</div>
+      <h2 class="section-title">Industry Expertise</h2>
+    </div>
+    <p class="section-desc">Sector-specific threat knowledge means faster, more relevant security outcomes for your organisation.</p>
+  </div>
+  <div class="ind-grid">
+    <div class="ind-card">
+      <div class="ind-icon">🏦</div>
+      <h3>Financial Services</h3>
+      <p>PCI-DSS, DORA, FCA compliance and fraud prevention for banks, insurers, and fintechs.</p>
+    </div>
+    <div class="ind-card">
+      <div class="ind-icon">🏥</div>
+      <h3>Healthcare</h3>
+      <p>NHS and HIPAA-aligned security for hospitals, clinics, and medical device manufacturers.</p>
+    </div>
+    <div class="ind-card">
+      <div class="ind-icon">⚡</div>
+      <h3>Critical Infrastructure</h3>
+      <p>OT/ICS security for energy, utilities, and transport operators facing nation-state threats.</p>
+    </div>
+    <div class="ind-card">
+      <div class="ind-icon">🏭</div>
+      <h3>Manufacturing</h3>
+      <p>Securing connected factories, supply chains, and industrial IoT environments.</p>
+    </div>
+    <div class="ind-card">
+      <div class="ind-icon">🛒</div>
+      <h3>Retail &amp; eCommerce</h3>
+      <p>Payment security, fraud detection, and customer data protection at scale.</p>
+    </div>
+    <div class="ind-card">
+      <div class="ind-icon">📡</div>
+      <h3>Telecoms &amp; Media</h3>
+      <p>Network security, content protection, and customer privacy for carriers and broadcasters.</p>
+    </div>
+    <div class="ind-card">
+      <div class="ind-icon">🏛️</div>
+      <h3>Public Sector</h3>
+      <p>Government and defence-grade security clearance capability and G-Cloud procurement.</p>
+    </div>
+    <div class="ind-card">
+      <div class="ind-icon">🚀</div>
+      <h3>Technology &amp; SaaS</h3>
+      <p>Secure SDLC, DevSecOps, and cloud-native security for technology companies.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CERTS -->
+<section id="certs" style="padding: 2.5rem 4rem;">
+  <div class="certs-row">
+    <span style="font-family: var(--mono); font-size: 0.65rem; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase;">Certified &amp; Accredited:</span>
+    <div class="cert-item">CREST Accredited</div>
+    <div class="cert-item">NCSC Assured</div>
+    <div class="cert-item">ISO 27001 Certified</div>
+    <div class="cert-item">CHECK Approved</div>
+    <div class="cert-item">Cyber Essentials Plus</div>
+    <div class="cert-item">OSCP / OSCE</div>
+  </div>
+</section>
+
+<!-- CLIENTS -->
+<section id="clients" style="background:var(--black); padding:5rem 0; overflow:hidden;">
+
+  <div style="text-align:center; margin-bottom:3rem; padding:0 4rem;">
+    <div class="section-label" style="justify-content:center; display:flex;">Track Record</div>
+    <h2 class="section-title" style="font-size:clamp(2rem,4vw,3rem);">Organisations Nitin Has<br>Secured &amp; Served</h2>
+    <p class="section-desc" style="margin:0.75rem auto 0; text-align:center; max-width:52ch;">A track record of delivering cybersecurity outcomes across financial services, government, retail, telecoms, energy and higher education.</p>
+  </div>
+
+  <!-- Row 1 — scrolls left -->
+  <div style="overflow:hidden; position:relative; margin-bottom:1px;">
+    <div style="position:absolute; left:0; top:0; bottom:0; width:100px; background:linear-gradient(to right, var(--black), transparent); z-index:2; pointer-events:none;"></div>
+    <div style="position:absolute; right:0; top:0; bottom:0; width:100px; background:linear-gradient(to left, var(--black), transparent); z-index:2; pointer-events:none;"></div>
+    <div id="client-row-1" style="display:flex; gap:0; width:max-content; animation:rollLeft 35s linear infinite;">
+    </div>
+  </div>
+
+  <!-- Row 2 — scrolls right (reverse) -->
+  <div style="overflow:hidden; position:relative; margin-top:1px;">
+    <div style="position:absolute; left:0; top:0; bottom:0; width:100px; background:linear-gradient(to right, var(--black), transparent); z-index:2; pointer-events:none;"></div>
+    <div style="position:absolute; right:0; top:0; bottom:0; width:100px; background:linear-gradient(to left, var(--black), transparent); z-index:2; pointer-events:none;"></div>
+    <div id="client-row-2" style="display:flex; gap:0; width:max-content; animation:rollRight 40s linear infinite;">
+    </div>
+  </div>
+
+  <!-- Sector pills -->
+  <div style="display:flex; gap:0.75rem; flex-wrap:wrap; justify-content:center; margin-top:2.5rem; padding:0 4rem;">
+    <div style="font-family:var(--mono); font-size:0.65rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; padding:0.4rem 1rem; border:1px solid var(--border); border-radius:20px;">🏦 Financial Services</div>
+    <div style="font-family:var(--mono); font-size:0.65rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; padding:0.4rem 1rem; border:1px solid var(--border); border-radius:20px;">🛒 Retail</div>
+    <div style="font-family:var(--mono); font-size:0.65rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; padding:0.4rem 1rem; border:1px solid var(--border); border-radius:20px;">🏛️ Government</div>
+    <div style="font-family:var(--mono); font-size:0.65rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; padding:0.4rem 1rem; border:1px solid var(--border); border-radius:20px;">📡 Telecoms</div>
+    <div style="font-family:var(--mono); font-size:0.65rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; padding:0.4rem 1rem; border:1px solid var(--border); border-radius:20px;">🏗️ Infrastructure</div>
+    <div style="font-family:var(--mono); font-size:0.65rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; padding:0.4rem 1rem; border:1px solid var(--border); border-radius:20px;">⚡ Energy</div>
+    <div style="font-family:var(--mono); font-size:0.65rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; padding:0.4rem 1rem; border:1px solid var(--border); border-radius:20px;">🎓 Education</div>
+  </div>
+
+</section>
+
+<style>
+@keyframes rollLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes rollRight {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+#client-row-1:hover, #client-row-2:hover { animation-play-state: paused; }
+
+.c-tile {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 1.1rem 2rem;
+  border-right: 1px solid var(--border);
+  flex-shrink: 0;
+  opacity: 0.55;
+  transition: opacity 0.3s, background 0.3s;
+  cursor: default;
+}
+.c-tile:hover { opacity: 1; background: rgba(255,122,0,0.04); }
+.c-tile img {
+  width: 30px; height: 30px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 4px;
+  padding: 3px;
+  flex-shrink: 0;
+}
+.c-tile-fb {
+  width: 30px; height: 30px;
+  border-radius: 4px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 0.6rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+.c-tile-info {}
+.c-tile-name {
+  font-family: var(--display);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--white);
+  white-space: nowrap;
+}
+.c-tile-sector {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  margin-top: 2px;
+}
+</style>
+
+<script>
+(function() {
+  const row1clients = [
+    { name: "Walmart", sector: "Retail & eCommerce", domain: "walmart.com", color: "#0071ce" },
+    { name: "Asda", sector: "Retail & Supply Chain", domain: "asda.com", color: "#8bc34a" },
+    { name: "Tesco Bank", sector: "Financial Services", domain: "tescobank.com", color: "#e31837" },
+    { name: "Skanska", sector: "Construction & Infrastructure", domain: "skanska.com", color: "#005596" },
+    { name: "FCDO Services", sector: "Government & Defence", domain: "fcdo.gov.uk", color: "#1a237e" },
+    { name: "Atos", sector: "Technology & IT Services", domain: "atos.net", color: "#3d50b7" },
+  ];
+  const row2clients = [
+    { name: "Thomson Reuters", sector: "Media & Information", domain: "thomsonreuters.com", color: "#ff8000" },
+    { name: "British Telecom", sector: "Telecoms & Networks", domain: "bt.com", color: "#6600cc" },
+    { name: "ING Investment", sector: "Banking & Investment", domain: "ing.com", color: "#ff6200" },
+    { name: "EDF Energy", sector: "Energy & Utilities", domain: "edfenergy.com", color: "#0072bc" },
+    { name: "Univ. of Hertfordshire", sector: "Higher Education", domain: "herts.ac.uk", color: "#8b1a1a" },
+  ];
+
+  function makeTile(c) {
+    const tile = document.createElement('div');
+    tile.className = 'c-tile';
+
+    const img = document.createElement('img');
+    img.src = `https://logo.clearbit.com/${c.domain}`;
+    img.alt = c.name;
+
+    const fb = document.createElement('div');
+    fb.className = 'c-tile-fb';
+    fb.style.background = c.color;
+    fb.textContent = c.name.split(' ').map(w=>w[0]).join('').slice(0,3);
+
+    img.onerror = function() { this.style.display='none'; fb.style.display='flex'; };
+
+    const info = document.createElement('div');
+    info.className = 'c-tile-info';
+    info.innerHTML = `<div class="c-tile-name">${c.name}</div><div class="c-tile-sector">${c.sector}</div>`;
+
+    tile.append(img, fb, info);
+    return tile;
+  }
+
+  function fillRow(id, clients) {
+    const row = document.getElementById(id);
+    if (!row) return;
+    [...clients, ...clients, ...clients, ...clients].forEach(c => row.appendChild(makeTile(c)));
+  }
+
+  fillRow('client-row-1', row1clients);
+  fillRow('client-row-2', row2clients);
+})();
+</script>
+
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="team-intro">
+    <div class="section-label">The Team</div>
+    <h2 class="section-title">Expert Consultants</h2>
+    <p class="section-desc" style="margin-top: 0.75rem;">Former intelligence officers, CISO advisors, and elite red teamers — all on your side.</p>
+  </div>
+  <div class="team-grid">
+    <div class="team-card" style="border-color: rgba(255,122,0,0.35);">
+      <div class="team-photo" style="background: linear-gradient(135deg, #1a0e00 0%, #2a1800 100%);">
+        <svg width="60" height="68" viewBox="0 0 28 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="z-index:1;position:relative;">
+          <path d="M14 1L2 6.5V15C2 22.18 7.2 28.9 14 31C20.8 28.9 26 22.18 26 15V6.5L14 1Z" fill="rgba(255,122,0,0.25)" stroke="#ff7a00" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M14 7L6 10.5V16C6 20.4 9.6 24.5 14 26C18.4 24.5 22 20.4 22 16V10.5L14 7Z" fill="rgba(255,122,0,0.15)" stroke="#ff7a00" stroke-width="1" stroke-linejoin="round" opacity="0.7"/>
+          <path d="M10 16L13 19L18 13" stroke="#ff7a00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="team-info">
+        <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.25rem;">
+          <h3 style="margin:0;">Nitin Wadekar</h3>
+          <span style="font-family:var(--mono); font-size:0.58rem; background:var(--accent-dim); border:1px solid var(--border-bright); color:var(--accent); padding:2px 7px; border-radius:3px; letter-spacing:0.08em;">DIRECTOR</span>
+        </div>
+        <div class="team-role">// Founder &amp; Director</div>
+        <p>Visionary cybersecurity leader driving NirvanCyber's mission to deliver enterprise-grade security with boutique precision across the UK and Europe.</p>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-photo" style="background: linear-gradient(135deg, #1a0a00 0%, #2a1500 100%);">
+        <span style="font-family: var(--display); font-size: 2rem; font-weight: 800; color: var(--accent); z-index:1; position:relative;">PW</span>
+      </div>
+      <div class="team-info">
+        <h3>Pramod W Wadekar</h3>
+        <div class="team-role">// Red Team Director</div>
+        <p>OSCP, OSCE certified. Specialises in APT simulation, adversarial emulation and offensive security operations.</p>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-photo" style="background: linear-gradient(135deg, #00101a 0%, #001a2a 100%);">
+        <span style="font-family: var(--display); font-size: 2rem; font-weight: 800; color: var(--accent); z-index:1; position:relative;">AW</span>
+      </div>
+      <div class="team-info">
+        <h3>Arjun P Wadekar</h3>
+        <div class="team-role">// Cloud Security Principal</div>
+        <p>AWS & Azure security architect with deep expertise in zero-trust implementations and cloud-native security frameworks.</p>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-photo" style="background: linear-gradient(135deg, #0a0a1a 0%, #12122a 100%);">
+        <span style="font-family: var(--display); font-size: 2rem; font-weight: 800; color: var(--accent); z-index:1; position:relative;">AW</span>
+      </div>
+      <div class="team-info">
+        <h3>Agastya P Wadekar</h3>
+        <div class="team-role">// Threat Intel Analyst</div>
+        <p>Tracks nation-state actors across financial and critical infrastructure sectors with expertise in dark web intelligence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div style="text-align: center; margin-bottom: 0;">
+    <div class="section-label">Client Outcomes</div>
+    <h2 class="section-title">What Our Clients Say</h2>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <p class="testi-text">NirvanCyber's red team uncovered critical vulnerabilities our previous vendor had missed for two years. Their work has fundamentally changed how we approach security investment.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">RK</div>
+        <div>
+          <div class="testi-name">Rachel Kowalski</div>
+          <div class="testi-company">CISO // Meridian Bank</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <p class="testi-text">Following a ransomware incident, they had us recovered and hardened within 72 hours. The post-incident roadmap they delivered has been invaluable to our board.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">DT</div>
+        <div>
+          <div class="testi-name">David Thornton</div>
+          <div class="testi-company">CTO // NovaMed Healthcare</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <p class="testi-text">They didn't just advise — they worked alongside our team, transferred knowledge, and left us genuinely more capable. That's rare in this industry.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">AM</div>
+        <div>
+          <div class="testi-name">Aisha Mohammed</div>
+          <div class="testi-company">Head of IT // Clearwater Energy</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPANDED SERVICES (Accenture-style depth) -->
+<section id="expanded-services">
+  <div style="margin-bottom: 4rem;">
+    <div class="section-label">Service Depth</div>
+    <h2 class="section-title">What We Actually Deliver</h2>
+    <p class="section-desc">Modelled on the best of Accenture Security, Deloitte Cyber, IBM X-Force, Mandiant, and PwC — but without the overheads.</p>
+  </div>
+  <div class="exp-services-layout">
+    <div class="exp-services-nav">
+      <div class="section-label" style="margin-bottom: 1.5rem;">Practice Areas</div>
+      <div class="exp-nav-item active" onclick="scrollToPanel('panel-cyber-strategy')">Cyber Strategy &amp; Risk</div>
+      <div class="exp-nav-item" onclick="scrollToPanel('panel-managed')">Managed Security (MSSP)</div>
+      <div class="exp-nav-item" onclick="scrollToPanel('panel-identity')">Identity &amp; Access</div>
+      <div class="exp-nav-item" onclick="scrollToPanel('panel-devsec')">DevSecOps &amp; AppSec</div>
+      <div class="exp-nav-item" onclick="scrollToPanel('panel-ot')">OT / ICS / IoT Security</div>
+      <div class="exp-nav-item" onclick="scrollToPanel('panel-dfir')">DFIR &amp; Forensics</div>
+    </div>
+    <div class="exp-panels">
+
+      <!-- Panel 1 -->
+      <div class="exp-panel open" id="panel-cyber-strategy">
+        <div class="exp-panel-header" onclick="togglePanel(this)">
+          <div class="exp-panel-title-row">
+            <span class="exp-panel-icon">🎯</span>
+            <div>
+              <div class="exp-panel-title">Cyber Strategy &amp; Risk Management</div>
+              <div class="exp-panel-sub">Board-level security advisory and enterprise risk frameworks</div>
+            </div>
+          </div>
+          <span class="exp-panel-arrow">▲</span>
+        </div>
+        <div class="exp-panel-body">
+          <div class="exp-panel-inner">
+            <p style="font-size:0.85rem; color:#9ca3af; margin-bottom:1.5rem; line-height:1.75;">We align cybersecurity with your business objectives — translating technical risk into language your board and CFO understand, then building programmes to address it systematically. The same enterprise-grade methodology as the world's leading cyber practices, delivered directly by a senior expert — without the overhead, the account managers, or the junior teams.</p>
+            <div class="exp-capabilities">
+              <div class="exp-cap">
+                <h5>CISO-as-a-Service</h5>
+                <p>Fractional or interim CISO leadership, security committee reporting, and executive stakeholder management.</p>
+              </div>
+              <div class="exp-cap">
+                <h5>Cyber Risk Quantification</h5>
+                <p>FAIR methodology modelling to translate cyber risk into financial exposure for board and insurers.</p>
+              </div>
+              <div class="exp-cap">
+                <h5>Security Programme Design</h5>
+                <p>Multi-year security roadmaps based on NIST CSF, ISO 27001, and your sector's regulatory landscape.</p>
+              </div>
+              <div class="exp-cap">
+                <h5>Third-Party Risk Management</h5>
+                <p>Supplier security assessments, contractual requirements, and continuous monitoring of your supply chain.</p>
+              </div>
+            </div>
+            <div class="exp-firms-row">
+              <span class="exp-firms-label">Comparable to:</span>
+              <span class="exp-firm-badge">Accenture Cyber Strategy</span>
+              <span class="exp-firm-badge">Deloitte Cyber Risk</span>
+              <span class="exp-firm-badge">PwC Security Consulting</span>
+              <span class="exp-firm-badge us">NirvanCyber ✓ Boutique Speed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 2 -->
+      <div class="exp-panel" id="panel-managed">
+        <div class="exp-panel-header" onclick="togglePanel(this)">
+          <div class="exp-panel-title-row">
+            <span class="exp-panel-icon">📡</span>
+            <div>
+              <div class="exp-panel-title">Managed Security Services (MSSP)</div>
+              <div class="exp-panel-sub">24/7 SOC, SIEM, SOAR and continuous threat detection</div>
+            </div>
+          </div>
+          <span class="exp-panel-arrow">▲</span>
+        </div>
+        <div class="exp-panel-body">
+          <div class="exp-panel-inner">
+            <p style="font-size:0.85rem; color:#9ca3af; margin-bottom:1.5rem; line-height:1.75;">Our managed security capabilities rival those of IBM Managed Security Services and Capgemini's SOC network — with dedicated analysts, not shared queues. Every client gets a named analyst team and weekly intelligence briefings.</p>
+            <div class="exp-capabilities">
+              <div class="exp-cap">
+                <h5>24/7 SOC Monitoring</h5>
+                <p>Dedicated analyst team with sub-15-minute mean time to detect (MTTD) across endpoints, network, and cloud.</p>
+              </div>
+              <div class="exp-cap">
+                <h5>SIEM Engineering</h5>
+                <p>Splunk, Microsoft Sentinel, and Elastic deployments with custom detection rules tuned to your environment.</p>
+              </div>
+              <div class="exp-cap">
+                <h5>SOAR Automation</h5>
+                <p>Automated playbooks for triage, enrichment, and response — reducing analyst fatigue and false positives by 70%.</p>
+              </div>
+              <div class="exp-cap">
+                <h5>Vulnerability Management</h5>
+                <p>Continuous scanning, risk-prioritised patching guidance, and SLA-driven remediation tracking via your dashboard.</p>
+              </div>
+            </div>
+            <div class="exp-firms-row">
+              <span class="exp-firms-label">Comparable to:</span>
+              <span class="exp-firm-badge">IBM Managed Security</span>
+              <span class="exp-firm-badge">Capgemini SOC</span>
+              <span class="exp-firm-badge">Accenture MxDR</span>
+              <span class="exp-firm-badge us">NirvanCyber ✓ Named Analysts</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 3 -->
+      <div class="exp-panel" id="panel-identity">
+        <div class="exp-panel-header" onclick="togglePanel(this)">
+          <div class="exp-panel-title-row">
+            <span class="exp-panel-icon">🔑</span>
+            <div>
+              <div class="exp-panel-title">Identity &amp; Access Management</div>
+              <div class="exp-panel-sub">Zero Trust, PAM, MFA, and identity governance</div>
+            </div>
+          </div>
+          <span class="exp-panel-arrow">▲</span>
+        </div>
+        <div class="exp-panel-body">
+          <div class="exp-panel-inner">
+            <p style="font-size:0.85rem; color:#9ca3af; margin-bottom:1.5rem; line-height:1.75;">Identity is the new perimeter. Our IAM practice mirrors Deloitte's Identity practice and Microsoft's Zero Trust advisory — designing least-privilege access architectures that stop credential-based attacks before they spread.</p>
+            <div class="exp-capabilities">
+              <div class="exp-cap">
+                <h5>Zero Trust Architecture</h5>
+                <p>Microsoft, Zscaler, and Palo Alto-based ZTNA design, deployment, and change management.</p>
+              </div>
+              <div class="exp-cap">
+                <h5>Privileged Access Management</h5>
+                <p>CyberArk, BeyondTrust, and Delinea implementations with just-in-time and just-enough access controls.</p>
+              </div>
+              <div class="exp-cap">
+                <h5>Identity Governance &amp; Admin</h5>
+                <p>SailPoint and Saviynt IGA deployments, access certification campaigns, and orphan account remediation.</p>
+              </div>
+              <div class="exp-cap">
+                <h5>Active Directory Hardening</h5>
+                <p>Tiered AD architecture, Kerberoasting defence, DCSync protection, and LAPS deployment across estates.</p>
+              </div>
+            </div>
+            <div class="exp-firms-row">
+              <span class="exp-firms-label">Comparable to:</span>
+              <span class="exp-firm-badge">Deloitte Identity</span>
+              <span class="exp-firm-badge">Accenture IAM</span>
+              <span class="exp-firm-badge">PwC Zero Trust</span>
+              <span class="exp-firm-badge us">NirvanCyber ✓ Faster Delivery</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 4 -->
+      <div class="exp-panel" id="panel-devsec">
+        <div class="exp-panel-header" onclick="togglePanel(this)">
+          <div class="exp-panel-title-row">
+            <span class="exp-panel-icon">⚙️</span>
+            <div>
+              <div class="exp-panel-title">DevSecOps &amp; Application Security</div>
+              <div class="exp-panel-sub">Shift-left security embedded into your SDLC</div>
+            </div>
+          </div>
+          <span class="exp-panel-arrow">▲</span>
+        </div>
+        <div class="exp-panel-body">
+          <div class="exp-panel-inner">
+            <p style="font-size:0.85rem; color:#9ca3af; margin-bottom:1.5rem; line-height:1.75;">Security baked into your pipelines from the start — not bolted on at the end. We deliver the AppSec maturity of firms like Accenture Security and IBM X-Force Red, adapted for agile teams and cloud-native environments.</p>
+            <div class="exp-capabilities">
+              <div class="exp-cap">
+                <h5>Secure Code Review</h5>
+                <p>Manual and automated SAST/DAST analysis, OWASP Top 10 coverage, and developer security coaching.</p>
+              </div>
+              <div class="exp-cap">
+                <h5>API Security Testing</h5>
+                <p>REST, GraphQL, and SOAP API pentesting with Postman, Burp Suite, and custom tooling.</p>
+              </div>
+              <div class="exp-cap">
+                <h5>Pipeline Security (CI/CD)</h5>
+                <p>GitHub Actions, GitLab CI, and Jenkins security hardening with secret scanning and SCA integration.</p>
+              </div>
+              <div class="exp-cap">
+                <h5>Container &amp; Kubernetes Security</h5>
+                <p>Docker image scanning, K8s RBAC hardening, runtime protection, and supply chain attestation.</p>
+              </div>
+            </div>
+            <div class="exp-firms-row">
+              <span class="exp-firms-label">Comparable to:</span>
+              <span class="exp-firm-badge">IBM X-Force Red AppSec</span>
+              <span class="exp-firm-badge">Accenture DevSecOps</span>
+              <span class="exp-firm-badge us">NirvanCyber ✓ Developer-First</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 5 -->
+      <div class="exp-panel" id="panel-ot">
+        <div class="exp-panel-header" onclick="togglePanel(this)">
+          <div class="exp-panel-title-row">
+            <span class="exp-panel-icon">🏭</span>
+            <div>
+              <div class="exp-panel-title">OT / ICS / IoT Security</div>
+              <div class="exp-panel-sub">Protecting operational technology and industrial control systems</div>
+            </div>
+          </div>
+          <span class="exp-panel-arrow">▲</span>
+        </div>
+        <div class="exp-panel-body">
+          <div class="exp-panel-inner">
+            <p style="font-size:0.85rem; color:#9ca3af; margin-bottom:1.5rem; line-height:1.75;">Critical infrastructure security is our most specialised capability. We bring Mandiant (Google Cloud) and Dragos-level OT expertise to energy, manufacturing, and transport operators — without nation-state consulting rates.</p>
+            <div class="exp-capabilities">
+              <div class="exp-cap">
+                <h5>OT Network Assessment</h5>
+                <p>Passive asset discovery, protocol analysis, and Purdue model gap assessment using Claroty and Dragos.</p>
+              </div>
+              <div class="exp-cap">
+                <h5>ICS Penetration Testing</h5>
+                <p>Safe, controlled testing of SCADA, DCS, and PLC environments with full operational continuity maintained.</p>
+              </div>
+              <div class="exp-cap">
+                <h5>IT/OT Convergence Security</h5>
+                <p>Securing the boundary between corporate IT and plant-floor OT as environments become increasingly connected.</p>
+              </div>
+              <div class="exp-cap">
+                <h5>NIS2 / CAF Compliance</h5>
+                <p>Full Network and Information Systems Directive 2 readiness assessments and NCSC CAF alignment for CNI operators.</p>
+              </div>
+            </div>
+            <div class="exp-firms-row">
+              <span class="exp-firms-label">Comparable to:</span>
+              <span class="exp-firm-badge">Mandiant OT</span>
+              <span class="exp-firm-badge">Dragos</span>
+              <span class="exp-firm-badge">Accenture ICS</span>
+              <span class="exp-firm-badge us">NirvanCyber ✓ NIS2 Specialists</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 6 -->
+      <div class="exp-panel" id="panel-dfir">
+        <div class="exp-panel-header" onclick="togglePanel(this)">
+          <div class="exp-panel-title-row">
+            <span class="exp-panel-icon">🔬</span>
+            <div>
+              <div class="exp-panel-title">DFIR &amp; Digital Forensics</div>
+              <div class="exp-panel-sub">Breach investigation, evidence preservation, and legal-grade reporting</div>
+            </div>
+          </div>
+          <span class="exp-panel-arrow">▲</span>
+        </div>
+        <div class="exp-panel-body">
+          <div class="exp-panel-inner">
+            <p style="font-size:0.85rem; color:#9ca3af; margin-bottom:1.5rem; line-height:1.75;">When a breach occurs, minutes matter. Our DFIR capability mirrors Mandiant's incident response reputation — rapid containment, forensically sound investigation, and litigation-ready reporting within hours of engagement.</p>
+            <div class="exp-capabilities">
+              <div class="exp-cap">
+                <h5>Rapid Incident Response</h5>
+                <p>On-site or remote deployment within 4 hours. Containment, triage, and executive comms within 24 hours.</p>
+              </div>
+              <div class="exp-cap">
+                <h5>Malware Analysis</h5>
+                <p>Static and dynamic analysis of threat actor tooling, custom implants, and ransomware decryption assessment.</p>
+              </div>
+              <div class="exp-cap">
+                <h5>Legal-Grade Forensics</h5>
+                <p>Court-admissible evidence collection, chain of custody documentation, and expert witness reports.</p>
+              </div>
+              <div class="exp-cap">
+                <h5>Post-Incident Hardening</h5>
+                <p>Comprehensive lessons-learned programme and remediation implementation to prevent recurrence.</p>
+              </div>
+            </div>
+            <div class="exp-firms-row">
+              <span class="exp-firms-label">Comparable to:</span>
+              <span class="exp-firm-badge">Mandiant IR</span>
+              <span class="exp-firm-badge">IBM X-Force IRIS</span>
+              <span class="exp-firm-badge">CrowdStrike Services</span>
+              <span class="exp-firm-badge us">NirvanCyber ✓ 4hr SLA</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /.exp-panels -->
+  </div>
+</section>
+
+<!-- BIG 5 COMPARISON -->
+<section id="compare">
+  <div class="compare-intro">
+    <div class="section-label" style="justify-content:center; display:flex;">Market Context</div>
+    <h2 class="section-title">How We Compare to the<br><span style="color:var(--accent)">Top 5 Cyber Consultancies</span></h2>
+    <p class="section-desc">The same calibre of expertise as the global giants — without the cost, bureaucracy, or generic delivery model.</p>
+  </div>
+
+  <div class="firms-grid">
+    <div class="firm-card">
+      <div class="firm-logo-box">🟣</div>
+      <div class="firm-name">Accenture Security</div>
+      <div class="firm-tagline">// GLOBAL SCALE</div>
+      <div class="firm-tags">
+        <div class="firm-tag">MxDR Platform</div>
+        <div class="firm-tag">Cyber Fusion</div>
+        <div class="firm-tag">IAM &amp; ZT</div>
+        <div class="firm-tag">High cost</div>
+      </div>
+    </div>
+    <div class="firm-card">
+      <div class="firm-logo-box">🟢</div>
+      <div class="firm-name">Deloitte Cyber</div>
+      <div class="firm-tagline">// BIG 4 ADVISORY</div>
+      <div class="firm-tags">
+        <div class="firm-tag">GRC Leadership</div>
+        <div class="firm-tag">Cloud Security</div>
+        <div class="firm-tag">Cyber Risk</div>
+        <div class="firm-tag">Slow delivery</div>
+      </div>
+    </div>
+    <div class="firm-card highlight">
+      <div class="firm-logo-box" style="border-color:rgba(255,122,0,0.4); background:rgba(255,122,0,0.08);">
+        <svg width="24" height="28" viewBox="0 0 28 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14 1L2 6.5V15C2 22.18 7.2 28.9 14 31C20.8 28.9 26 22.18 26 15V6.5L14 1Z" fill="rgba(255,122,0,0.2)" stroke="#ff7a00" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M10 16L13 19L18 13" stroke="#ff7a00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="firm-name">NirvanCyber</div>
+      <div class="firm-tagline">// BOUTIQUE SPECIALIST</div>
+      <div class="firm-tags">
+        <div class="firm-tag accent-tag">All capabilities</div>
+        <div class="firm-tag accent-tag">Named experts</div>
+        <div class="firm-tag accent-tag">Agile delivery</div>
+        <div class="firm-tag accent-tag">Transparent pricing</div>
+      </div>
+    </div>
+    <div class="firm-card">
+      <div class="firm-logo-box">🔵</div>
+      <div class="firm-name">IBM Security</div>
+      <div class="firm-tagline">// TECHNOLOGY-LED</div>
+      <div class="firm-tags">
+        <div class="firm-tag">X-Force IRIS</div>
+        <div class="firm-tag">QRadar SIEM</div>
+        <div class="firm-tag">Managed SOC</div>
+        <div class="firm-tag">Platform lock-in</div>
+      </div>
+    </div>
+    <div class="firm-card">
+      <div class="firm-logo-box">🔴</div>
+      <div class="firm-name">Mandiant (Google)</div>
+      <div class="firm-tagline">// THREAT INTEL LEADER</div>
+      <div class="firm-tags">
+        <div class="firm-tag">APT Research</div>
+        <div class="firm-tag">DFIR</div>
+        <div class="firm-tag">Threat Intel</div>
+        <div class="firm-tag">Premium rates</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="compare-table-wrap">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Capability</th>
+          <th>Accenture</th>
+          <th>Deloitte</th>
+          <th class="us-col">NirvanCyber</th>
+          <th>IBM Security</th>
+          <th>Mandiant</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Penetration Testing</td>
+          <td><span class="check">✓</span></td>
+          <td><span class="partial">◐ Subcon</span></td>
+          <td class="us-col"><span class="check">✓ In-house CREST</span></td>
+          <td><span class="check">✓ X-Force Red</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td>24/7 SOC / MSSP</td>
+          <td><span class="check">✓ MxDR</span></td>
+          <td><span class="partial">◐ Via partners</span></td>
+          <td class="us-col"><span class="check">✓ Named analysts</span></td>
+          <td><span class="check">✓ QRadar</span></td>
+          <td><span class="cross">✗</span></td>
+        </tr>
+        <tr>
+          <td>OT / ICS Security</td>
+          <td><span class="check">✓</span></td>
+          <td><span class="partial">◐</span></td>
+          <td class="us-col"><span class="check">✓ NIS2 Specialists</span></td>
+          <td><span class="partial">◐</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td>Incident Response SLA</td>
+          <td><span class="partial">◐ 8–24hr</span></td>
+          <td><span class="partial">◐ 12–48hr</span></td>
+          <td class="us-col"><span class="check">✓ &lt;4hr</span></td>
+          <td><span class="check">✓ X-Force IRIS</span></td>
+          <td><span class="check">✓ &lt;2hr</span></td>
+        </tr>
+        <tr>
+          <td>Dedicated account team</td>
+          <td><span class="cross">✗ Rotated staff</span></td>
+          <td><span class="cross">✗ Rotated staff</span></td>
+          <td class="us-col"><span class="check">✓ Always yours</span></td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="partial">◐</span></td>
+        </tr>
+        <tr>
+          <td>Transparent fixed pricing</td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="cross">✗</span></td>
+          <td class="us-col"><span class="check">✓</span></td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="cross">✗</span></td>
+        </tr>
+        <tr>
+          <td>NCSC / CREST certified</td>
+          <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+          <td class="us-col"><span class="check">✓</span></td>
+          <td><span class="partial">◐</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td>Typical engagement start</td>
+          <td><span class="cross">6–12 weeks</span></td>
+          <td><span class="cross">8–16 weeks</span></td>
+          <td class="us-col"><span class="check">✓ 1–2 weeks</span></td>
+          <td><span class="partial">4–8 weeks</span></td>
+          <td><span class="partial">2–4 weeks</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="section-label" style="justify-content: center; display: flex;">Get Started</div>
+  <h2 class="section-title">Ready to Secure<br>Your Organisation?</h2>
+  <p class="section-desc">Book a no-obligation security assessment with our consultants. We'll identify your highest-risk exposure areas within 48 hours.</p>
+  <div class="cta-actions">
+    <a href="#contact" class="btn-primary">Get In Touch</a>
+    <a href="tel:+447702997524" class="btn-ghost">Call Us: +44 7702 997524</a>
+  </div>
+</section>
+
+<!-- CONTACT FORM -->
+<section id="contact" style="background: var(--deep); padding: 7rem 4rem;">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; max-width: 1100px; margin: 0 auto;">
+
+    <!-- Left side info -->
+    <div>
+      <div class="section-label">Contact Us</div>
+      <h2 class="section-title">Let's Talk<br><span style="color:var(--accent)">Security.</span></h2>
+      <p class="section-desc" style="margin-top: 0.75rem;">Whether you need an urgent incident response, a penetration test, or a long-term security partner — we respond within 4 hours.</p>
+
+      <div style="margin-top: 3rem; display: flex; flex-direction: column; gap: 1.75rem;">
+        <div style="display:flex; gap:1rem; align-items:flex-start;">
+          <div style="width:42px; height:42px; border:1px solid var(--border-bright); border-radius:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:1rem;">📧</div>
+          <div>
+            <div style="font-family:var(--display); font-weight:700; font-size:0.9rem; margin-bottom:0.2rem;">General Enquiries</div>
+            <a href="mailto:hello@nirvancyber.com" style="color:var(--accent); font-family:var(--mono); font-size:0.8rem; text-decoration:none;">hello@nirvancyber.com</a>
+          </div>
+        </div>
+        <div style="display:flex; gap:1rem; align-items:flex-start;">
+          <div style="width:42px; height:42px; border:1px solid var(--border-bright); border-radius:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:1rem;">💼</div>
+          <div>
+            <div style="font-family:var(--display); font-weight:700; font-size:0.9rem; margin-bottom:0.2rem;">Sales & New Business</div>
+            <a href="mailto:sales@nirvancyber.com" style="color:var(--accent); font-family:var(--mono); font-size:0.8rem; text-decoration:none;">sales@nirvancyber.com</a>
+          </div>
+        </div>
+        <div style="display:flex; gap:1rem; align-items:flex-start;">
+          <div style="width:42px; height:42px; border:1px solid var(--border-bright); border-radius:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:1rem;">🛠️</div>
+          <div>
+            <div style="font-family:var(--display); font-weight:700; font-size:0.9rem; margin-bottom:0.2rem;">Technical Support</div>
+            <a href="mailto:support@nirvancyber.com" style="color:var(--accent); font-family:var(--mono); font-size:0.8rem; text-decoration:none;">support@nirvancyber.com</a>
+          </div>
+        </div>
+        <div style="display:flex; gap:1rem; align-items:flex-start;">
+          <div style="width:42px; height:42px; border:1px solid var(--border-bright); border-radius:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:1rem;">📞</div>
+          <div>
+            <div style="font-family:var(--display); font-weight:700; font-size:0.9rem; margin-bottom:0.2rem;">Call Nitin Direct</div>
+            <a href="tel:+447702997524" style="color:var(--accent); font-family:var(--mono); font-size:0.8rem; text-decoration:none;">+44 7702 997524</a>
+          </div>
+        </div>
+        <div style="display:flex; gap:1rem; align-items:flex-start;">
+          <div style="width:42px; height:42px; border:1px solid var(--border-bright); border-radius:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:1rem;">🌐</div>
+          <div>
+            <div style="font-family:var(--display); font-weight:700; font-size:0.9rem; margin-bottom:0.2rem;">Website</div>
+            <a href="https://nirvancyber.com" style="color:var(--accent); font-family:var(--mono); font-size:0.8rem; text-decoration:none;">nirvancyber.com</a>
+          </div>
+        </div>
+        <div style="display:flex; gap:1rem; align-items:flex-start;">
+          <div style="width:42px; height:42px; border:1px solid var(--border-bright); border-radius:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:1rem;">⚡</div>
+          <div>
+            <div style="font-family:var(--display); font-weight:700; font-size:0.9rem; margin-bottom:0.2rem;">Response Time</div>
+            <div style="color:var(--accent); font-family:var(--mono); font-size:0.8rem;">Within 4 hours — guaranteed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right side form -->
+    <div>
+      <div id="form-success" style="display:none; background:rgba(0,200,100,0.08); border:1px solid rgba(0,200,100,0.3); border-radius:8px; padding:2rem; text-align:center; margin-bottom:1.5rem;">
+        <div style="font-size:2rem; margin-bottom:0.75rem;">✅</div>
+        <div style="font-family:var(--display); font-weight:700; font-size:1.1rem; margin-bottom:0.5rem;">Message Sent!</div>
+        <div style="font-size:0.85rem; color:var(--muted);">Thank you — Nitin will respond within 4 hours.</div>
+      </div>
+
+      <div style="background:var(--card); border:1px solid var(--border); border-radius:8px; padding:2.5rem;">
+        <div style="font-family:var(--mono); font-size:0.65rem; color:var(--accent); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:1.75rem;">// Send us a message</div>
+
+        <form id="contact-form" action="https://formspree.io/f/mykonzaw" method="POST" style="display:flex; flex-direction:column; gap:1.25rem;">
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div>
+              <label style="font-size:0.75rem; color:var(--muted); font-family:var(--mono); letter-spacing:0.06em; display:block; margin-bottom:0.4rem;">FULL NAME *</label>
+              <input type="text" name="name" required placeholder="Nitin Wadekar"
+                style="width:100%; background:var(--deep); border:1px solid var(--border); border-radius:4px; padding:0.75rem 1rem; color:var(--white); font-family:var(--body); font-size:0.875rem; outline:none; transition:border-color 0.2s;"
+                onfocus="this.style.borderColor='#ff7a00'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'">
+            </div>
+            <div>
+              <label style="font-size:0.75rem; color:var(--muted); font-family:var(--mono); letter-spacing:0.06em; display:block; margin-bottom:0.4rem;">COMPANY *</label>
+              <input type="text" name="company" required placeholder="Your Organisation"
+                style="width:100%; background:var(--deep); border:1px solid var(--border); border-radius:4px; padding:0.75rem 1rem; color:var(--white); font-family:var(--body); font-size:0.875rem; outline:none; transition:border-color 0.2s;"
+                onfocus="this.style.borderColor='#ff7a00'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'">
+            </div>
+          </div>
+
+          <div>
+            <label style="font-size:0.75rem; color:var(--muted); font-family:var(--mono); letter-spacing:0.06em; display:block; margin-bottom:0.4rem;">EMAIL ADDRESS *</label>
+            <input type="email" name="email" required placeholder="you@company.com"
+              style="width:100%; background:var(--deep); border:1px solid var(--border); border-radius:4px; padding:0.75rem 1rem; color:var(--white); font-family:var(--body); font-size:0.875rem; outline:none; transition:border-color 0.2s;"
+              onfocus="this.style.borderColor='#ff7a00'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'">
+          </div>
+
+          <div>
+            <label style="font-size:0.75rem; color:var(--muted); font-family:var(--mono); letter-spacing:0.06em; display:block; margin-bottom:0.4rem;">PHONE NUMBER</label>
+            <input type="tel" name="phone" placeholder="+44 7700 000000"
+              style="width:100%; background:var(--deep); border:1px solid var(--border); border-radius:4px; padding:0.75rem 1rem; color:var(--white); font-family:var(--body); font-size:0.875rem; outline:none; transition:border-color 0.2s;"
+              onfocus="this.style.borderColor='#ff7a00'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'">
+          </div>
+
+          <div>
+            <label style="font-size:0.75rem; color:var(--muted); font-family:var(--mono); letter-spacing:0.06em; display:block; margin-bottom:0.4rem;">ENQUIRY TYPE *</label>
+            <select name="enquiry_type" required id="enquiry-type"
+              style="width:100%; background:var(--deep); border:1px solid var(--border); border-radius:4px; padding:0.75rem 1rem; color:var(--white); font-family:var(--body); font-size:0.875rem; outline:none; transition:border-color 0.2s; cursor:pointer;"
+              onfocus="this.style.borderColor='#ff7a00'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'">
+              <option value="" disabled selected style="color:#6b7280;">Select enquiry type...</option>
+              <option value="sales">💼 New Business / Sales — sales@nirvancyber.com</option>
+              <option value="support">🛠️ Technical Support — support@nirvancyber.com</option>
+              <option value="hello">📧 General Enquiry — hello@nirvancyber.com</option>
+            </select>
+          </div>
+
+          <div>
+            <label style="font-size:0.75rem; color:var(--muted); font-family:var(--mono); letter-spacing:0.06em; display:block; margin-bottom:0.4rem;">SERVICE REQUIRED *</label>
+            <select name="service" required
+              style="width:100%; background:var(--deep); border:1px solid var(--border); border-radius:4px; padding:0.75rem 1rem; color:var(--white); font-family:var(--body); font-size:0.875rem; outline:none; transition:border-color 0.2s; cursor:pointer;"
+              onfocus="this.style.borderColor='#ff7a00'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'">
+              <option value="" disabled selected style="color:#6b7280;">Select a service...</option>
+              <option value="penetration-testing">Penetration Testing</option>
+              <option value="incident-response">Incident Response</option>
+              <option value="security-architecture">Security Architecture</option>
+              <option value="cloud-security">Cloud Security</option>
+              <option value="compliance-grc">Compliance &amp; GRC</option>
+              <option value="managed-soc">Managed SOC / MSSP</option>
+              <option value="threat-intelligence">Threat Intelligence</option>
+              <option value="ot-ics">OT / ICS Security</option>
+              <option value="dfir">DFIR &amp; Forensics</option>
+              <option value="ciso-advisory">CISO Advisory</option>
+              <option value="other">Other / Not Sure</option>
+            </select>
+          </div>
+
+          <div>
+            <label style="font-size:0.75rem; color:var(--muted); font-family:var(--mono); letter-spacing:0.06em; display:block; margin-bottom:0.4rem;">MESSAGE *</label>
+            <textarea name="message" required rows="4" placeholder="Tell us about your security challenge or what you need help with..."
+              style="width:100%; background:var(--deep); border:1px solid var(--border); border-radius:4px; padding:0.75rem 1rem; color:var(--white); font-family:var(--body); font-size:0.875rem; outline:none; transition:border-color 0.2s; resize:vertical;"
+              onfocus="this.style.borderColor='#ff7a00'" onblur="this.style.borderColor='rgba(255,255,255,0.08)'"></textarea>
+          </div>
+
+          <button type="submit" id="submit-btn"
+            style="background:var(--accent); color:var(--black); padding:1rem 2rem; border:none; border-radius:4px; font-family:var(--display); font-weight:700; font-size:0.9rem; letter-spacing:0.04em; cursor:pointer; transition:opacity 0.2s; text-align:center;">
+            Send Message →
+          </button>
+
+          <!-- Cloudflare Turnstile widget -->
+          <div class="cf-turnstile"
+            data-sitekey="0x4AAAAAADPSkdtygrYvr65A"
+            data-theme="dark"
+            data-size="normal"
+            style="margin: 0.5rem 0;">
+          </div>
+
+          <div style="font-size:0.72rem; color:var(--muted); text-align:center; font-family:var(--mono);">
+            🔒 Your data is encrypted and never shared with third parties
+          </div>
+          <div style="font-size:0.65rem; color:rgba(255,255,255,0.2); text-align:center; font-family:var(--mono); line-height:1.5;">
+            Protected by Cloudflare Turnstile
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  // Contact form with Cloudflare Turnstile
+  const form = document.getElementById('contact-form');
+  const btn = document.getElementById('submit-btn');
+  const success = document.getElementById('form-success');
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    // Check Turnstile token is present
+    const turnstileToken = form.querySelector('[name="cf-turnstile-response"]');
+    if (!turnstileToken || !turnstileToken.value) {
+      alert('Please complete the security check.');
+      return;
+    }
+
+    btn.textContent = 'Sending...';
+    btn.style.opacity = '0.7';
+    btn.disabled = true;
+
+    try {
+      const data = new FormData(form);
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        form.style.display = 'none';
+        success.style.display = 'block';
+      } else {
+        throw new Error('Submission failed');
+      }
+    } catch(err) {
+      btn.textContent = 'Error — Try Again';
+      btn.style.opacity = '1';
+      btn.style.background = '#ff3b5c';
+      btn.disabled = false;
+    }
+  });
+</script>
+
+<!-- BLOG -->
+<section id="blog" style="background: var(--black); padding: 7rem 4rem;">
+  <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:4rem; flex-wrap:wrap; gap:2rem;">
+    <div>
+      <div class="section-label">Insights & Thought Leadership</div>
+      <h2 class="section-title">NirvanCyber Blog</h2>
+    </div>
+    <p class="section-desc">Expert perspectives on the evolving cybersecurity landscape from Nitin Wadekar and the NirvanCyber team.</p>
+  </div>
+
+  <div style="display:grid; grid-template-columns: 2fr 1fr 1fr; gap:1.5rem;">
+
+    <!-- Featured Article -->
+    <div style="background:var(--card); border:1px solid var(--border); border-radius:8px; overflow:hidden; grid-row: span 2; display:flex; flex-direction:column;">
+      <div style="background:linear-gradient(135deg, #1a0e00 0%, #2a1500 50%, #0a0a1a 100%); height:220px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;">
+        <div style="position:absolute; inset:0; background-image: linear-gradient(rgba(255,122,0,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,122,0,0.05) 1px, transparent 1px); background-size:30px 30px;"></div>
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:relative; z-index:1; opacity:0.6;">
+          <circle cx="40" cy="40" r="30" stroke="#ff7a00" stroke-width="1" stroke-dasharray="4 4"/>
+          <circle cx="40" cy="40" r="18" stroke="#ff7a00" stroke-width="1"/>
+          <circle cx="40" cy="40" r="5" fill="#ff7a00"/>
+          <line x1="40" y1="10" x2="40" y2="22" stroke="#ff7a00" stroke-width="1.5"/>
+          <line x1="40" y1="58" x2="40" y2="70" stroke="#ff7a00" stroke-width="1.5"/>
+          <line x1="10" y1="40" x2="22" y2="40" stroke="#ff7a00" stroke-width="1.5"/>
+          <line x1="58" y1="40" x2="70" y2="40" stroke="#ff7a00" stroke-width="1.5"/>
+          <line x1="18" y1="18" x2="27" y2="27" stroke="#ff7a00" stroke-width="1"/>
+          <line x1="53" y1="53" x2="62" y2="62" stroke="#ff7a00" stroke-width="1"/>
+          <line x1="62" y1="18" x2="53" y2="27" stroke="#ff7a00" stroke-width="1"/>
+          <line x1="27" y1="53" x2="18" y2="62" stroke="#ff7a00" stroke-width="1"/>
+        </svg>
+      </div>
+      <div style="padding:2rem; flex:1; display:flex; flex-direction:column;">
+        <div style="display:flex; gap:0.75rem; margin-bottom:1.25rem; flex-wrap:wrap;">
+          <span style="font-family:var(--mono); font-size:0.65rem; color:var(--accent); background:var(--accent-dim); border:1px solid var(--border-bright); padding:3px 10px; border-radius:3px; letter-spacing:0.06em;">FEATURED</span>
+          <span style="font-family:var(--mono); font-size:0.65rem; color:var(--muted); letter-spacing:0.06em;">AI & CYBERSECURITY</span>
+          <span style="font-family:var(--mono); font-size:0.65rem; color:var(--muted); letter-spacing:0.06em;">6 MIN READ</span>
+        </div>
+        <h3 style="font-family:var(--display); font-size:1.4rem; font-weight:800; letter-spacing:-0.02em; line-height:1.2; margin-bottom:1rem;">The Double-Edged Sword: How AI is Simultaneously Defending and Attacking Enterprise Networks</h3>
+        <p style="font-size:0.875rem; color:#9ca3af; line-height:1.8; flex:1;">Artificial intelligence is no longer a future concept in cybersecurity — it is the battlefield itself. At NirvanCyber, we are witnessing first-hand how AI is transforming both sides of the security equation. Defenders are using machine learning to detect anomalies in milliseconds. Attackers are using the same technology to craft hyper-personalised phishing emails, bypass endpoint detection, and automate vulnerability discovery at unprecedented scale.</p>
+        <p style="font-size:0.875rem; color:#9ca3af; line-height:1.8; margin-top:1rem;">The organisations that will survive the next decade are those that understand AI is not a silver bullet — it is a force multiplier. A poorly configured AI security tool is just as dangerous as no tool at all. What matters is human expertise layered on top of intelligent automation: knowing when to trust the algorithm and when to override it.</p>
+        <p style="font-size:0.875rem; color:#9ca3af; line-height:1.8; margin-top:1rem;">Our recommendation to every CISO we advise: treat AI as your most junior — and most tireless — analyst. It can process a billion logs a day. It cannot judge context, politics, or intent. That judgement remains irreplaceably human.</p>
+        <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;">
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div style="width:34px; height:34px; border-radius:50%; background:var(--accent-dim); border:1px solid var(--border-bright); display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:0.7rem; color:var(--accent); font-weight:700;">NW</div>
+            <div>
+              <div style="font-size:0.8rem; font-weight:600;">Nitin Wadekar</div>
+              <div style="font-size:0.72rem; color:var(--muted); font-family:var(--mono);">Director, NirvanCyber · May 2025</div>
+            </div>
+          </div>
+          <a href="mailto:hello@nirvancyber.com?subject=Blog Enquiry" style="font-family:var(--mono); font-size:0.72rem; color:var(--accent); text-decoration:none; letter-spacing:0.06em;">DISCUSS →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article 2 -->
+    <div style="background:var(--card); border:1px solid var(--border); border-radius:8px; overflow:hidden; display:flex; flex-direction:column;">
+      <div style="background:linear-gradient(135deg, #00101a 0%, #001a2a 100%); height:120px; display:flex; align-items:center; justify-content:center;">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:0.6;">
+          <rect x="6" y="6" width="36" height="36" rx="4" stroke="#ff7a00" stroke-width="1.2"/>
+          <path d="M14 24h20M24 14v20" stroke="#ff7a00" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="24" cy="24" r="6" stroke="#ff7a00" stroke-width="1"/>
+        </svg>
+      </div>
+      <div style="padding:1.5rem; flex:1; display:flex; flex-direction:column;">
+        <div style="display:flex; gap:0.5rem; margin-bottom:0.9rem; flex-wrap:wrap;">
+          <span style="font-family:var(--mono); font-size:0.62rem; color:var(--accent); background:var(--accent-dim); border:1px solid var(--border-bright); padding:2px 8px; border-radius:3px;">ZERO TRUST</span>
+          <span style="font-family:var(--mono); font-size:0.62rem; color:var(--muted);">4 MIN READ</span>
+        </div>
+        <h3 style="font-family:var(--display); font-size:1rem; font-weight:700; letter-spacing:-0.02em; line-height:1.3; margin-bottom:0.75rem;">Why Zero Trust is No Longer Optional for UK Enterprises in 2025</h3>
+        <p style="font-size:0.8rem; color:#9ca3af; line-height:1.7; flex:1;">With NIS2 now enforceable across the EU and UK regulators tightening expectations post-Brexit, Zero Trust Architecture has shifted from best practice to regulatory expectation. Perimeter-based security is dead. Identity is the new perimeter — and most UK businesses are dangerously exposed.</p>
+        <div style="margin-top:1.25rem; padding-top:1rem; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;">
+          <div style="font-size:0.72rem; color:var(--muted); font-family:var(--mono);">Nitin Wadekar · Apr 2025</div>
+          <a href="mailto:hello@nirvancyber.com?subject=Zero Trust Enquiry" style="font-family:var(--mono); font-size:0.68rem; color:var(--accent); text-decoration:none;">READ MORE →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article 3 -->
+    <div style="background:var(--card); border:1px solid var(--border); border-radius:8px; overflow:hidden; display:flex; flex-direction:column;">
+      <div style="background:linear-gradient(135deg, #0a1a12 0%, #0f2a1a 100%); height:120px; display:flex; align-items:center; justify-content:center;">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:0.6;">
+          <path d="M24 4L4 13v12c0 13 8.5 21.5 20 25 11.5-3.5 20-12 20-25V13L24 4Z" stroke="#ff7a00" stroke-width="1.2"/>
+          <path d="M16 24l6 6 10-10" stroke="#ff7a00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div style="padding:1.5rem; flex:1; display:flex; flex-direction:column;">
+        <div style="display:flex; gap:0.5rem; margin-bottom:0.9rem; flex-wrap:wrap;">
+          <span style="font-family:var(--mono); font-size:0.62rem; color:var(--accent); background:var(--accent-dim); border:1px solid var(--border-bright); padding:2px 8px; border-radius:3px;">RANSOMWARE</span>
+          <span style="font-family:var(--mono); font-size:0.62rem; color:var(--muted);">5 MIN READ</span>
+        </div>
+        <h3 style="font-family:var(--display); font-size:1rem; font-weight:700; letter-spacing:-0.02em; line-height:1.3; margin-bottom:0.75rem;">AI-Powered Ransomware: The Threat That Keeps Evolving Faster Than Your Defences</h3>
+        <p style="font-size:0.8rem; color:#9ca3af; line-height:1.7; flex:1;">Modern ransomware groups are now using AI to identify high-value targets, time attacks to coincide with board meetings, and negotiate ransoms dynamically. The 2024 wave of AI-assisted attacks on UK retailers and financial institutions is just the beginning.</p>
+        <div style="margin-top:1.25rem; padding-top:1rem; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;">
+          <div style="font-size:0.72rem; color:var(--muted); font-family:var(--mono);">NirvanCyber Team · Mar 2025</div>
+          <a href="mailto:hello@nirvancyber.com?subject=Ransomware Defence Enquiry" style="font-family:var(--mono); font-size:0.68rem; color:var(--accent); text-decoration:none;">READ MORE →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article 4 -->
+    <div style="background:var(--card); border:1px solid var(--border); border-radius:8px; overflow:hidden; display:flex; flex-direction:column;">
+      <div style="padding:1.5rem; flex:1; display:flex; flex-direction:column;">
+        <div style="display:flex; gap:0.5rem; margin-bottom:0.9rem; flex-wrap:wrap;">
+          <span style="font-family:var(--mono); font-size:0.62rem; color:var(--accent); background:var(--accent-dim); border:1px solid var(--border-bright); padding:2px 8px; border-radius:3px;">COMPLIANCE</span>
+          <span style="font-family:var(--mono); font-size:0.62rem; color:var(--muted);">3 MIN READ</span>
+        </div>
+        <h3 style="font-family:var(--display); font-size:1rem; font-weight:700; letter-spacing:-0.02em; line-height:1.3; margin-bottom:0.75rem;">DORA Is Live: What UK Financial Firms Must Do Right Now</h3>
+        <p style="font-size:0.8rem; color:#9ca3af; line-height:1.7; flex:1;">The EU's Digital Operational Resilience Act came into full force in January 2025. UK firms with EU operations are directly impacted. Here's your 90-day action plan to achieve compliance without disrupting your operations.</p>
+        <div style="margin-top:1.25rem; padding-top:1rem; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;">
+          <div style="font-size:0.72rem; color:var(--muted); font-family:var(--mono);">Nitin Wadekar · Feb 2025</div>
+          <a href="mailto:hello@nirvancyber.com?subject=DORA Compliance Enquiry" style="font-family:var(--mono); font-size:0.68rem; color:var(--accent); text-decoration:none;">READ MORE →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article 5 -->
+    <div style="background:var(--card); border:1px solid var(--border); border-radius:8px; overflow:hidden; display:flex; flex-direction:column;">
+      <div style="padding:1.5rem; flex:1; display:flex; flex-direction:column;">
+        <div style="display:flex; gap:0.5rem; margin-bottom:0.9rem; flex-wrap:wrap;">
+          <span style="font-family:var(--mono); font-size:0.62rem; color:var(--accent); background:var(--accent-dim); border:1px solid var(--border-bright); padding:2px 8px; border-radius:3px;">OT SECURITY</span>
+          <span style="font-family:var(--mono); font-size:0.62rem; color:var(--muted);">4 MIN READ</span>
+        </div>
+        <h3 style="font-family:var(--display); font-size:1rem; font-weight:700; letter-spacing:-0.02em; line-height:1.3; margin-bottom:0.75rem;">Securing the Grid: Lessons from EDF Energy's OT Security Transformation</h3>
+        <p style="font-size:0.8rem; color:#9ca3af; line-height:1.7; flex:1;">Critical national infrastructure is the most targeted sector in 2025. Working with energy sector clients, we have seen how legacy OT systems create invisible attack paths that modern SOC tools simply cannot detect without specialist knowledge.</p>
+        <div style="margin-top:1.25rem; padding-top:1rem; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;">
+          <div style="font-size:0.72rem; color:var(--muted); font-family:var(--mono);">NirvanCyber Team · Jan 2025</div>
+          <a href="mailto:hello@nirvancyber.com?subject=OT Security Enquiry" style="font-family:var(--mono); font-size:0.68rem; color:var(--accent); text-decoration:none;">READ MORE →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Subscribe CTA -->
+  <div style="margin-top:3rem; background:var(--card); border:1px solid var(--border-bright); border-radius:8px; padding:2.5rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:2rem;">
+    <div>
+      <div style="font-family:var(--display); font-size:1.1rem; font-weight:700; margin-bottom:0.4rem;">Get NirvanCyber Insights in Your Inbox</div>
+      <div style="font-size:0.85rem; color:var(--muted);">Monthly threat intelligence briefings, compliance updates, and security guidance. No spam — ever.</div>
+    </div>
+    <a href="mailto:hello@nirvancyber.com?subject=Subscribe to NirvanCyber Blog" class="btn-primary" style="white-space:nowrap;">Subscribe Free →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#" class="logo" style="display:flex;align-items:center;gap:0.6rem;text-decoration:none;"><svg width="28" height="32" viewBox="0 0 28 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 1L2 6.5V15C2 22.18 7.2 28.9 14 31C20.8 28.9 26 22.18 26 15V6.5L14 1Z" fill="rgba(255,122,0,0.15)" stroke="#ff7a00" stroke-width="1.5" stroke-linejoin="round"/><path d="M14 7L6 10.5V16C6 20.4 9.6 24.5 14 26C18.4 24.5 22 20.4 22 16V10.5L14 7Z" fill="rgba(255,122,0,0.2)" stroke="#ff7a00" stroke-width="1" stroke-linejoin="round" opacity="0.7"/><path d="M10 16L13 19L18 13" stroke="#ff7a00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="color:#ff7a00;font-family:Syne,sans-serif;font-weight:800;font-size:1.35rem;letter-spacing:-0.03em;">Nirvan</span><span style="color:#f0f2f5;font-family:Syne,sans-serif;font-weight:800;font-size:1.35rem;letter-spacing:-0.03em;">Cyber</span></a>
+      <p>Enterprise cybersecurity consultancy protecting critical organisations across the UK and Europe since 2007.</p>
+      <div class="footer-badge" style="margin-top: 1.5rem;">
+        <div class="badge-dot"></div>
+        SOC Active — All Systems Operational
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#services">Penetration Testing</a></li>
+        <li><a href="#services">Security Architecture</a></li>
+        <li><a href="#services">Incident Response</a></li>
+        <li><a href="#services">Cloud Security</a></li>
+        <li><a href="#services">Compliance & GRC</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#team">Our Team</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Case Studies</a></li>
+        <li><a href="#blog">Blog & Insights</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="mailto:hello@nirvancyber.com">hello@nirvancyber.com</a></li>
+        <li><a href="mailto:sales@nirvancyber.com">sales@nirvancyber.com</a></li>
+        <li><a href="mailto:support@nirvancyber.com">support@nirvancyber.com</a></li>
+        <li><a href="tel:+447702997524">+44 7702 997524</a></li>
+        <li><a href="#">London · Manchester · Edinburgh</a></li>
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 NirvanCyber Security Ltd. All rights reserved. Director: Nitin Wadekar. Registered in England & Wales.</span>
+    <span style="font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.08em;">PGP KEY: 0x4F3B2A1C</span>
+  </div>
+</footer>
+<script>
+  function togglePanel(header) {
+    const panel = header.closest('.exp-panel');
+    const isOpen = panel.classList.contains('open');
+    document.querySelectorAll('.exp-panel').forEach(p => p.classList.remove('open'));
+    if (!isOpen) panel.classList.add('open');
+  }
+  function scrollToPanel(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const header = el.querySelector('.exp-panel-header');
+      if (header) {
+        setTimeout(() => {
+          document.querySelectorAll('.exp-panel').forEach(p => p.classList.remove('open'));
+          el.classList.add('open');
+        }, 400);
+      }
+    }
+    document.querySelectorAll('.exp-nav-item').forEach(n => n.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+</script>
+
+<!-- COOKIE CONSENT BANNER -->
+<div id="cookie-consent" style="position:fixed; bottom:0; left:0; right:0; z-index:99999; background:rgba(15,15,20,0.97); border-top:1px solid rgba(255,122,0,0.3); padding:1.25rem 2rem; display:flex; align-items:center; justify-content:space-between; gap:1.5rem; flex-wrap:wrap; backdrop-filter:blur(12px); box-shadow:0 -4px 30px rgba(0,0,0,0.4);">
+  <div style="display:flex; align-items:flex-start; gap:1rem; flex:1; min-width:280px;">
+    <div style="font-size:1.5rem; flex-shrink:0;">🍪</div>
+    <div>
+      <div style="font-family:'Syne',sans-serif; font-size:0.85rem; font-weight:600; color:#fff; margin-bottom:0.3rem;">We use cookies</div>
+      <div style="font-size:0.75rem; color:rgba(255,255,255,0.5); line-height:1.6; max-width:60ch;">We use cookies to enhance your browsing experience, analyse site traffic and personalise content. By clicking <strong style="color:rgba(255,255,255,0.8);">"Accept All"</strong> you consent to our use of cookies. You can manage your preferences or withdraw consent at any time. For more information see our <a href="#privacy" style="color:#ff7a00; text-decoration:none;">Privacy Policy</a>.</div>
+    </div>
+  </div>
+  <div style="display:flex; gap:0.75rem; flex-shrink:0; flex-wrap:wrap;">
+    <button onclick="manageCookies()" style="background:transparent; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); font-family:'Syne',sans-serif; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; padding:0.6rem 1.2rem; border-radius:4px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.4)'; this.style.color='#fff'" onmouseout="this.style.borderColor='rgba(255,255,255,0.2)'; this.style.color='rgba(255,255,255,0.6)'">Manage Options</button>
+    <button onclick="rejectCookies()" style="background:transparent; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); font-family:'Syne',sans-serif; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; padding:0.6rem 1.2rem; border-radius:4px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.4)'; this.style.color='#fff'" onmouseout="this.style.borderColor='rgba(255,255,255,0.2)'; this.style.color='rgba(255,255,255,0.6)'">Reject All</button>
+    <button onclick="acceptCookies()" style="background:#ff7a00; border:none; color:#fff; font-family:'Syne',sans-serif; font-size:0.72rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:0.6rem 1.5rem; border-radius:4px; cursor:pointer; transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Accept All</button>
+  </div>
+</div>
+
+<!-- COOKIE MANAGE MODAL -->
+<div id="cookie-modal" style="display:none; position:fixed; inset:0; z-index:999999; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); align-items:center; justify-content:center;">
+  <div style="background:#0f0f14; border:1px solid rgba(255,122,0,0.2); border-radius:8px; padding:2rem; max-width:520px; width:90%; max-height:90vh; overflow-y:auto;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+      <div style="font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:700; color:#fff;">Cookie Preferences</div>
+      <button onclick="closeCookieModal()" style="background:transparent; border:none; color:rgba(255,255,255,0.5); font-size:1.2rem; cursor:pointer;">✕</button>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:1rem;">
+
+      <!-- Necessary -->
+      <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:1rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+          <div style="font-family:'Syne',sans-serif; font-size:0.85rem; font-weight:600; color:#fff;">Strictly Necessary</div>
+          <div style="font-size:0.7rem; color:#ff7a00; font-family:'IBM Plex Mono',monospace;">Always Active</div>
+        </div>
+        <div style="font-size:0.75rem; color:rgba(255,255,255,0.4); line-height:1.6;">Required for the website to function. Cannot be disabled. These include session cookies and security cookies.</div>
+      </div>
+
+      <!-- Analytics -->
+      <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:1rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+          <div style="font-family:'Syne',sans-serif; font-size:0.85rem; font-weight:600; color:#fff;">Analytics Cookies</div>
+          <label style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;">
+            <input type="checkbox" id="analytics-toggle" style="opacity:0; width:0; height:0;">
+            <span id="analytics-slider" onclick="toggleCookie('analytics')" style="position:absolute; inset:0; background:rgba(255,255,255,0.15); border-radius:24px; transition:0.3s; cursor:pointer;"></span>
+          </label>
+        </div>
+        <div style="font-size:0.75rem; color:rgba(255,255,255,0.4); line-height:1.6;">Help us understand how visitors interact with our website using Google Analytics. All data is anonymised.</div>
+      </div>
+
+      <!-- Marketing -->
+      <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:6px; padding:1rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+          <div style="font-family:'Syne',sans-serif; font-size:0.85rem; font-weight:600; color:#fff;">Marketing & Advertising</div>
+          <label style="position:relative; display:inline-block; width:44px; height:24px; cursor:pointer;">
+            <input type="checkbox" id="marketing-toggle" style="opacity:0; width:0; height:0;">
+            <span id="marketing-slider" onclick="toggleCookie('marketing')" style="position:absolute; inset:0; background:rgba(255,255,255,0.15); border-radius:24px; transition:0.3s; cursor:pointer;"></span>
+          </label>
+        </div>
+        <div style="font-size:0.75rem; color:rgba(255,255,255,0.4); line-height:1.6;">Used for Google AdSense and personalised advertising. Helps us show relevant ads to visitors.</div>
+      </div>
+
+    </div>
+
+    <div style="display:flex; gap:0.75rem; margin-top:1.5rem; justify-content:flex-end;">
+      <button onclick="rejectCookies()" style="background:transparent; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); font-family:'Syne',sans-serif; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; padding:0.6rem 1.2rem; border-radius:4px; cursor:pointer;">Reject All</button>
+      <button onclick="savePreferences()" style="background:#ff7a00; border:none; color:#fff; font-family:'Syne',sans-serif; font-size:0.72rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:0.6rem 1.5rem; border-radius:4px; cursor:pointer;">Save Preferences</button>
+    </div>
+
+    <div style="margin-top:1.25rem; padding-top:1rem; border-top:1px solid rgba(255,255,255,0.08); font-size:0.7rem; color:rgba(255,255,255,0.3); line-height:1.6;">
+      In accordance with UK GDPR and the Privacy and Electronic Communications Regulations (PECR). NirvanCyber — nirvancyber.com
+    </div>
+  </div>
+</div>
+
+<script>
+// Cookie consent logic
+const COOKIE_KEY = 'nirvancyber_consent';
+
+function setCookie(name, value, days) {
+  const d = new Date(); d.setTime(d.getTime() + days*24*60*60*1000);
+  document.cookie = name + '=' + value + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+}
+
+function getCookie(name) {
+  const v = document.cookie.match('(^|;)\s*' + name + '\s*=\s*([^;]+)');
+  return v ? v.pop() : '';
+}
+
+function hideBanner() {
+  const b = document.getElementById('cookie-consent');
+  if (b) { b.style.transform = 'translateY(100%)'; b.style.transition = 'transform 0.4s ease'; setTimeout(() => b.style.display='none', 400); }
+}
+
+function acceptCookies() {
+  setCookie(COOKIE_KEY, 'all', 365);
+  hideBanner();
+  closeCookieModal();
+}
+
+function rejectCookies() {
+  setCookie(COOKIE_KEY, 'necessary', 365);
+  hideBanner();
+  closeCookieModal();
+}
+
+function manageCookies() {
+  document.getElementById('cookie-modal').style.display = 'flex';
+}
+
+function closeCookieModal() {
+  document.getElementById('cookie-modal').style.display = 'none';
+}
+
+function toggleCookie(type) {
+  const slider = document.getElementById(type + '-slider');
+  const isOn = slider.dataset.on === 'true';
+  slider.dataset.on = !isOn;
+  slider.style.background = !isOn ? '#ff7a00' : 'rgba(255,255,255,0.15)';
+}
+
+function savePreferences() {
+  const analytics = document.getElementById('analytics-slider').dataset.on === 'true';
+  const marketing = document.getElementById('marketing-slider').dataset.on === 'true';
+  const val = JSON.stringify({ necessary: true, analytics, marketing });
+  setCookie(COOKIE_KEY, val, 365);
+  hideBanner();
+  closeCookieModal();
+}
+
+// Show banner if no consent stored
+window.addEventListener('load', function() {
+  if (!getCookie(COOKIE_KEY)) {
+    const b = document.getElementById('cookie-consent');
+    if (b) b.style.display = 'flex';
+  } else {
+    const b = document.getElementById('cookie-consent');
+    if (b) b.style.display = 'none';
+  }
+});
+
+// Close modal on outside click
+document.getElementById('cookie-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeCookieModal();
+});
+</script>
+
+</body>
+</html>
